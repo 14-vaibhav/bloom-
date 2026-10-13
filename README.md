@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Bloom — Multimodal Study Companion
 
 An AI study companion that has read your course. It unifies lecture videos, slides and a textbook into one source-cited knowledge base, then uses it to tutor and to run adaptive assessments. **Every tutor answer and every question points at an exact lecture timestamp, slide or textbook page — and a validator rejects any answer whose citations do not check out.** Underneath is the v3 learning autopilot, which is the personalisation engine: it predicts how a study session will go, tests whether it was right, and rewrites the plan the moment reality disagrees. Not "goal in → LLM → timetable → done" — a closed loop that observes, updates beliefs, evaluates triggers, decides scope, plans, validates, repairs, and acts, on its own clock.
@@ -120,3 +121,6 @@ npm run check:links
 ## Tech stack
 
 Express + TypeScript + Drizzle ORM + Postgres/pgvector on the backend; React + Vite + Tailwind on the frontend; Zod for validation end to end; Vitest for tests (320+ passing).
+=======
+# bloom-
+>>>>>>> 088232e66ca3a46aa4731abe8abbd96cda837d69
