@@ -1,0 +1,2 @@
+ALTER TABLE "mastery_observations" ADD COLUMN "source_id" text NOT NULL;--> statement-breakpoint
+CREATE UNIQUE INDEX IF NOT EXISTS "mastery_observations_dedup_idx" ON "mastery_observations" USING btree ("student_id","subtopic_id","source_id");

@@ -1,0 +1,6 @@
+[
+  { "id": "dsa", "name": "Data Structures & Algorithms" },
+  { "id": "cn", "name": "Computer Networks" },
+  { "id": "rdbms", "name": "Relational Databases" },
+  { "id": "oop", "name": "Object-Oriented Programming" }
+]

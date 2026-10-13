@@ -1,0 +1,578 @@
+[
+  {
+    "id": "arr_prefix_sum__easy__0",
+    "subjectId": "dsa",
+    "topicId": "arrays",
+    "subtopicId": "arr_prefix_sum",
+    "conceptId": "arr_prefix_sum__cumulative_sum",
+    "difficulty": 1,
+    "stem": "What is the primary purpose of precomputing a prefix sum array for a static 1D array?",
+    "options": [
+      "To sort the original array elements in linear time.",
+      "To compute the sum of elements in any range [L, R] in O(1) time.",
+      "To find the maximum element in any subarray in O(1) time.",
+      "To allow O(1) insertions of new elements at any index."
+    ],
+    "correctIndex": 1,
+    "explanation": "Precomputing a prefix sum array allows range sum queries to be answered in O(1) time using subtraction (P[R] - P[L-1]). Option C is a common misconception: prefix sums only aggregate addition, whereas finding range maximums in O(1) requires structures like Sparse Tables or Segment Trees.",
+    "reviewed": true
+  },
+  {
+    "id": "arr_prefix_sum__easy__1",
+    "subjectId": "dsa",
+    "topicId": "arrays",
+    "subtopicId": "arr_prefix_sum",
+    "conceptId": "arr_prefix_sum__cumulative_sum",
+    "difficulty": 1,
+    "stem": "Given the array A = [2, 4, 1, 5], what is its corresponding prefix sum array P, where P[i] represents the cumulative sum from index 0 to i?",
+    "options": [
+      "[2, 6, 7, 12]",
+      "[2, 4, 1, 5]",
+      "[2, 6, 5, 6]",
+      "[0, 2, 6, 7]"
+    ],
+    "correctIndex": 0,
+    "explanation": "The prefix sum array accumulates totals step-by-step: P[0]=2, P[1]=2+4=6, P[2]=6+1=7, and P[3]=7+5=12, resulting in [2, 6, 7, 12]. Option D is incorrect because it misses the final total (12) by treating the array as truncated or padded incorrectly without keeping all cumulative sums.",
+    "reviewed": true
+  },
+  {
+    "id": "arr_prefix_sum__easy__2",
+    "subjectId": "dsa",
+    "topicId": "arrays",
+    "subtopicId": "arr_prefix_sum",
+    "conceptId": "arr_prefix_sum__range_query",
+    "difficulty": 1,
+    "stem": "What is the time complexity to answer a single range sum query for range [L, R] using a precomputed prefix sum array?",
+    "options": [
+      "O(1)",
+      "O(N)",
+      "O(log N)",
+      "O(R - L)"
+    ],
+    "correctIndex": 0,
+    "explanation": "Once precomputed, any range sum can be calculated with a single subtraction operation (e.g., P[R] - P[L-1]), which takes O(1) time. Option B (O(N)) is the time complexity of the naive approach without precomputation (iterating through the subarray).",
+    "reviewed": true
+  },
+  {
+    "id": "arr_prefix_sum__easy__3",
+    "subjectId": "dsa",
+    "topicId": "arrays",
+    "subtopicId": "arr_prefix_sum",
+    "conceptId": "arr_prefix_sum__range_query",
+    "difficulty": 1,
+    "stem": "How is the sum of elements from index L to index R (inclusive, 0-indexed) calculated using a standard prefix sum array P, where L > 0?",
+    "options": [
+      "P[R] - P[L - 1]",
+      "P[R] - P[L]",
+      "P[R + 1] - P[L]",
+      "P[R] + P[L]"
+    ],
+    "correctIndex": 0,
+    "explanation": "To include element A[L] in the sum, we must subtract all elements up to index L-1 (represented by P[L-1]) from the total sum up to R (P[R]). Option B is wrong because subtracting P[L] accidentally removes A[L] from the final sum.",
+    "reviewed": true
+  },
+  {
+    "id": "arr_prefix_sum__easy__4",
+    "subjectId": "dsa",
+    "topicId": "arrays",
+    "subtopicId": "arr_prefix_sum",
+    "conceptId": "arr_prefix_sum__cumulative_sum",
+    "difficulty": 1,
+    "stem": "What is the optimal time complexity to construct a prefix sum array of size N from an input array of size N?",
+    "options": [
+      "O(N)",
+      "O(1)",
+      "O(N log N)",
+      "O(N^2)"
+    ],
+    "correctIndex": 0,
+    "explanation": "A prefix sum array can be constructed in O(N) time using the recurrence P[i] = P[i-1] + A[i] in a single pass. Option D (O(N^2)) is incorrect because it describes re-summing the array from index 0 for every element instead of reusing the previous prefix sum.",
+    "reviewed": true
+  },
+  {
+    "id": "arr_prefix_sum__easy__5",
+    "subjectId": "dsa",
+    "topicId": "arrays",
+    "subtopicId": "arr_prefix_sum",
+    "conceptId": "arr_prefix_sum__range_query",
+    "difficulty": 1,
+    "stem": "Given a 1-indexed prefix sum array P = [0, 3, 8, 10, 15] for an array A, what is the sum of elements from index 2 to index 4 (1-indexed) in array A?",
+    "options": [
+      "12",
+      "7",
+      "15",
+      "10"
+    ],
+    "correctIndex": 0,
+    "explanation": "For 1-indexed range queries [L, R], the formula is P[R] - P[L-1]. Here L=2 and R=4, so P[4] - P[2-1] = P[4] - P[1] = 15 - 3 = 12. Option B (7) is wrong because calculating P[4] - P[2] (15 - 8) mistakenly excludes the element at index 2.",
+    "reviewed": true
+  },
+  {
+    "id": "arr_prefix_sum__easy__6",
+    "subjectId": "dsa",
+    "topicId": "arrays",
+    "subtopicId": "arr_prefix_sum",
+    "conceptId": "arr_prefix_sum__cumulative_sum",
+    "difficulty": 1,
+    "stem": "Why is a 1-indexed prefix sum array of size N + 1 (with P[0] = 0) often preferred over a 0-indexed prefix sum array of size N?",
+    "options": [
+      "It eliminates the need for an if-statement when querying ranges that start at index 0.",
+      "It reduces the space complexity of the prefix sum array from O(N) to O(1).",
+      "It allows range query operations to run in O(1) instead of O(log N).",
+      "It enables O(1) updates to the underlying array."
+    ],
+    "correctIndex": 0,
+    "explanation": "By padding index 0 with value 0, the range sum formula P[R] - P[L-1] works uniformly for any L >= 1 without needing special branching logic for L = 0. Option D is incorrect because standard prefix sum arrays cannot handle dynamic element updates in O(1) time regardless of indexing.",
+    "reviewed": true
+  },
+  {
+    "id": "arr_prefix_sum__easy__7",
+    "subjectId": "dsa",
+    "topicId": "arrays",
+    "subtopicId": "arr_prefix_sum",
+    "conceptId": "arr_prefix_sum__cumulative_sum",
+    "difficulty": 1,
+    "stem": "What is the main drawback of using a standard prefix sum array when the underlying array values are modified frequently?",
+    "options": [
+      "Updating a single element requires updating subsequent values in the prefix sum array, taking O(N) time.",
+      "Range queries become O(N) instead of O(1) after an update.",
+      "The prefix sum array requires O(N^2) memory space after multiple updates.",
+      "The prefix sum array must be discarded and cannot be updated."
+    ],
+    "correctIndex": 0,
+    "explanation": "When an element at index i changes, all prefix sums from index i to N-1 must be updated, taking O(N) time in the worst case. Option B is wrong because range queries remain O(1) arithmetic operations; the inefficiency lies purely in the update operation itself.",
+    "reviewed": true
+  },
+  {
+    "id": "arr_binary_search__easy__0",
+    "subjectId": "dsa",
+    "topicId": "arrays",
+    "subtopicId": "arr_binary_search",
+    "conceptId": "arr_binary_search__search_space_reduction",
+    "difficulty": 1,
+    "stem": "In standard binary search on a sorted array of size n, how does the search space change with each iteration?",
+    "options": [
+      "It decreases by 1 element.",
+      "It is halved.",
+      "It is reduced to the square root of n.",
+      "It decreases by a fixed step size equal to the target."
+    ],
+    "correctIndex": 1,
+    "explanation": "Binary search divides the remaining range of elements in half during every iteration, resulting in logarithmic search space reduction. Option 0 describes a linear search, which eliminates only 1 element per iteration rather than half the array.",
+    "reviewed": true
+  },
+  {
+    "id": "arr_binary_search__easy__1",
+    "subjectId": "dsa",
+    "topicId": "arrays",
+    "subtopicId": "arr_binary_search",
+    "conceptId": "arr_binary_search__boundary_conditions",
+    "difficulty": 1,
+    "stem": "When implementing binary search with `while (left <= right)`, how should `left` be updated if `array[mid]` is strictly less than the target value?",
+    "options": [
+      "left = mid + 1",
+      "left = mid",
+      "left = mid - 1",
+      "left = right"
+    ],
+    "correctIndex": 0,
+    "explanation": "Because `array[mid]` is strictly smaller than the target, index `mid` cannot be the answer. Thus, the new search space must start at `mid + 1`. Setting `left = mid` (Option 1) is a common bug that causes an infinite loop when `left` and `right` are equal or adjacent.",
+    "reviewed": true
+  },
+  {
+    "id": "arr_binary_search__easy__2",
+    "subjectId": "dsa",
+    "topicId": "arrays",
+    "subtopicId": "arr_binary_search",
+    "conceptId": "arr_binary_search__monotonic_predicate",
+    "difficulty": 1,
+    "stem": "Which property MUST an array or search space possess for a standard binary search to successfully find a target element?",
+    "options": [
+      "All elements in the array must be unique.",
+      "The elements (or evaluation predicate) must be monotonic/sorted.",
+      "The number of elements in the array must be a power of two.",
+      "The array must contain only positive values."
+    ],
+    "correctIndex": 1,
+    "explanation": "Binary search relies on monotonicity (e.g., sorted order) so that comparing the middle element with the target allows you to unambiguously discard one half of the search space. Option 0 is incorrect because binary search still functions on arrays containing duplicate values.",
+    "reviewed": true
+  },
+  {
+    "id": "arr_binary_search__easy__3",
+    "subjectId": "dsa",
+    "topicId": "arrays",
+    "subtopicId": "arr_binary_search",
+    "conceptId": "arr_binary_search__boundary_conditions",
+    "difficulty": 1,
+    "stem": "Given a 0-indexed sorted array of 8 elements with `left = 0` and `right = 7`, what is the value of `mid` using integer division `mid = left + (right - left) / 2`?",
+    "options": [
+      "3",
+      "4",
+      "3.5",
+      "7"
+    ],
+    "correctIndex": 0,
+    "explanation": "Evaluating `0 + (7 - 0) / 2` gives `7 / 2`, which truncates (floors) to `3` under standard integer division. Option 1 (4) is a common mistake resulting from rounding up instead of down.",
+    "reviewed": true
+  },
+  {
+    "id": "arr_binary_search__easy__4",
+    "subjectId": "dsa",
+    "topicId": "arrays",
+    "subtopicId": "arr_binary_search",
+    "conceptId": "arr_binary_search__search_space_reduction",
+    "difficulty": 1,
+    "stem": "What is the worst-case time complexity of binary search on a sorted array of size n?",
+    "options": [
+      "O(n)",
+      "O(log n)",
+      "O(n log n)",
+      "O(1)"
+    ],
+    "correctIndex": 1,
+    "explanation": "Because the search space is halved in each step, the algorithm executes at most log₂(n) iterations, giving a time complexity of O(log n). Option 0 (O(n)) is the time complexity of linear search, where elements are checked one by one.",
+    "reviewed": true
+  },
+  {
+    "id": "arr_binary_search__easy__5",
+    "subjectId": "dsa",
+    "topicId": "arrays",
+    "subtopicId": "arr_binary_search",
+    "conceptId": "arr_binary_search__boundary_conditions",
+    "difficulty": 1,
+    "stem": "Which formula for calculating `mid` avoids potential integer overflow when `left` and `right` are very large integers?",
+    "options": [
+      "mid = (left + right) / 2",
+      "mid = left + (right - left) / 2",
+      "mid = (left * right) / 2",
+      "mid = right - (left / 2)"
+    ],
+    "correctIndex": 1,
+    "explanation": "By subtracting `left` from `right` first, `left + (right - left) / 2` keeps intermediate values smaller than `right`, avoiding overflow. Option 0 (`(left + right) / 2`) can overflow standard 32-bit signed integer limits if `left + right` exceeds 2,147,483,647.",
+    "reviewed": true
+  },
+  {
+    "id": "arr_binary_search__easy__6",
+    "subjectId": "dsa",
+    "topicId": "arrays",
+    "subtopicId": "arr_binary_search",
+    "conceptId": "arr_binary_search__monotonic_predicate",
+    "difficulty": 1,
+    "stem": "Suppose you want to find the index of the first `true` value in the array `[false, false, false, true, true]`. Why does binary search work on this boolean array?",
+    "options": [
+      "The values form a monotonic sequence of false values followed by true values.",
+      "The array has an odd number of elements.",
+      "The target value `true` is repeated at least twice.",
+      "Boolean arrays automatically sort themselves in memory."
+    ],
+    "correctIndex": 0,
+    "explanation": "Binary search works on any array where the condition (or predicate) is monotonic—here, returning `false` up to a boundary point and `true` everywhere after. Option 2 is incorrect because the number of duplicate `true` values does not determine whether binary search is applicable; the monotonic order does.",
+    "reviewed": true
+  },
+  {
+    "id": "arr_binary_search__easy__7",
+    "subjectId": "dsa",
+    "topicId": "arrays",
+    "subtopicId": "arr_binary_search",
+    "conceptId": "arr_binary_search__boundary_conditions",
+    "difficulty": 1,
+    "stem": "In a binary search implementation using the loop condition `while (left < right)`, what is guaranteed to be true when the loop finishes without finding the target early?",
+    "options": [
+      "left > right",
+      "left == right",
+      "mid == 0",
+      "left == 0"
+    ],
+    "correctIndex": 1,
+    "explanation": "A `while (left < right)` loop continues as long as `left` is strictly less than `right`. It terminates the exact moment `left` becomes equal to `right`. Option 0 (`left > right`) describes the condition upon termination of a `while (left <= right)` loop when an element is not found.",
+    "reviewed": true
+  },
+  {
+    "id": "ll_singly__easy__0",
+    "subjectId": "dsa",
+    "topicId": "linked_lists",
+    "subtopicId": "ll_singly",
+    "conceptId": "ll_singly__node_traversal",
+    "difficulty": 1,
+    "stem": "What is the standard loop condition to process every node in a singly linked list from the head to the end using a traversal pointer named 'current'?",
+    "options": [
+      "while (current != NULL)",
+      "while (current->next != NULL)",
+      "while (current == NULL)",
+      "for (int i = 0; i < current.length; i++)"
+    ],
+    "correctIndex": 0,
+    "explanation": "The condition 'while (current != NULL)' allows the loop to process every valid node, including the last one, stopping only when 'current' advances past the tail. The common distractor 'while (current->next != NULL)' stops one step early, leaving the data inside the tail node unprocessed.",
+    "reviewed": true
+  },
+  {
+    "id": "ll_singly__easy__1",
+    "subjectId": "dsa",
+    "topicId": "linked_lists",
+    "subtopicId": "ll_singly",
+    "conceptId": "ll_singly__pointer_manipulation",
+    "difficulty": 1,
+    "stem": "Which sequence of pointer assignments correctly inserts a new node ('newNode') at the very beginning (head) of a singly linked list?",
+    "options": [
+      "newNode->next = head; head = newNode;",
+      "head = newNode; newNode->next = head;",
+      "head->next = newNode; newNode = head;",
+      "newNode->next = head->next; head = newNode;"
+    ],
+    "correctIndex": 0,
+    "explanation": "Executing 'newNode->next = head' first connects the new node to the existing start of the list. Then updating 'head = newNode' makes the head pointer reference the new start. If 'head = newNode' is done first (as in the distractor), the address of the original list is overwritten and lost, causing a memory leak.",
+    "reviewed": true
+  },
+  {
+    "id": "ll_singly__easy__2",
+    "subjectId": "dsa",
+    "topicId": "linked_lists",
+    "subtopicId": "ll_singly",
+    "conceptId": "ll_singly__node_traversal",
+    "difficulty": 1,
+    "stem": "Which condition correctly tests if a traversal pointer 'temp' is currently pointing to the last node (tail) of a non-empty singly linked list?",
+    "options": [
+      "temp->next == NULL",
+      "temp == NULL",
+      "temp->next == head",
+      "temp->data == NULL"
+    ],
+    "correctIndex": 0,
+    "explanation": "In a singly linked list, the tail node is defined as the node whose 'next' pointer is NULL. The tempting option 'temp == NULL' tests whether the pointer has already moved off the list entirely, which means 'temp' is no longer referencing any node at all.",
+    "reviewed": true
+  },
+  {
+    "id": "ll_singly__easy__3",
+    "subjectId": "dsa",
+    "topicId": "linked_lists",
+    "subtopicId": "ll_singly",
+    "conceptId": "ll_singly__pointer_manipulation",
+    "difficulty": 1,
+    "stem": "Given a pointer 'prev' pointing to a specific node in a singly linked list, which line of code correctly removes the node immediately following 'prev' from the list chain?",
+    "options": [
+      "prev->next = prev->next->next;",
+      "prev = prev->next->next;",
+      "prev->next = prev;",
+      "prev->next->next = prev;"
+    ],
+    "correctIndex": 0,
+    "explanation": "Assigning 'prev->next = prev->next->next' updates the 'next' pointer of 'prev' to skip the target node and point directly to the node after it. The distractor 'prev = prev->next->next' only updates the local variable 'prev' itself, failing to modify the list structure.",
+    "reviewed": true
+  },
+  {
+    "id": "ll_singly__easy__4",
+    "subjectId": "dsa",
+    "topicId": "linked_lists",
+    "subtopicId": "ll_singly",
+    "conceptId": "ll_singly__node_traversal",
+    "difficulty": 1,
+    "stem": "When traversing a singly linked list, how do you advance a pointer named 'current' to the next node?",
+    "options": [
+      "current = current->next;",
+      "current++;",
+      "current = current + 1;",
+      "current->next = current;"
+    ],
+    "correctIndex": 0,
+    "explanation": "Because linked list nodes are allocated dynamically across memory rather than contiguously, advancing requires following the reference using 'current = current->next'. Options like 'current++' rely on pointer arithmetic assuming contiguous memory (like an array), which results in undefined behavior or memory access errors.",
+    "reviewed": true
+  },
+  {
+    "id": "ll_singly__easy__5",
+    "subjectId": "dsa",
+    "topicId": "linked_lists",
+    "subtopicId": "ll_singly",
+    "conceptId": "ll_singly__pointer_manipulation",
+    "difficulty": 1,
+    "stem": "You want to insert 'newNode' immediately after a given node 'prevNode' in a singly linked list. Which pair of operations accomplishes this without losing list references?",
+    "options": [
+      "newNode->next = prevNode->next; prevNode->next = newNode;",
+      "prevNode->next = newNode; newNode->next = prevNode->next;",
+      "newNode->next = prevNode; prevNode->next = newNode;",
+      "prevNode->next = newNode->next; newNode->next = prevNode;"
+    ],
+    "correctIndex": 0,
+    "explanation": "'newNode->next = prevNode->next' must occur first to save the link to the remainder of the list before 'prevNode->next' is overwritten. If 'prevNode->next = newNode' is run first (as in the distractor), 'prevNode->next' now points to 'newNode', causing 'newNode->next' to point back to itself and breaking the rest of the list.",
+    "reviewed": true
+  },
+  {
+    "id": "ll_singly__easy__6",
+    "subjectId": "dsa",
+    "topicId": "linked_lists",
+    "subtopicId": "ll_singly",
+    "conceptId": "ll_singly__pointer_manipulation",
+    "difficulty": 1,
+    "stem": "To delete the first (head) node of a non-empty singly linked list and update the list's 'head' pointer, which operation should be performed?",
+    "options": [
+      "head = head->next;",
+      "head->next = head;",
+      "head = NULL;",
+      "head->next = head->next->next;"
+    ],
+    "correctIndex": 0,
+    "explanation": "Setting 'head = head->next' moves the head pointer to the second node, making it the new head of the list. The distractor 'head->next = head->next->next' bypasses and deletes the *second* node in the list instead of deleting the first node.",
+    "reviewed": true
+  },
+  {
+    "id": "ll_singly__easy__7",
+    "subjectId": "dsa",
+    "topicId": "linked_lists",
+    "subtopicId": "ll_singly",
+    "conceptId": "ll_singly__node_traversal",
+    "difficulty": 1,
+    "stem": "Consider a code segment intended to print every node's value in a list: \n\n`Node* current = head;` \n`while (current != NULL) {` \n`    print(current->data);` \n`    // Missing Line` \n`}` \n\nWhich line must replace `// Missing Line` to correctly traverse the list?",
+    "options": [
+      "current = current->next;",
+      "current = head->next;",
+      "current->next = current->next->next;",
+      "current = current + sizeof(Node);"
+    ],
+    "correctIndex": 0,
+    "explanation": "'current = current->next;' moves 'current' step-by-step through each node in sequence until reaching NULL. Using 'current = head->next;' (the distractor) repeatedly resets 'current' to the second node of the list on every iteration, leading to an infinite loop.",
+    "reviewed": true
+  },
+  {
+    "id": "arr_traversal__easy__0",
+    "subjectId": "dsa",
+    "topicId": "arrays",
+    "subtopicId": "arr_traversal",
+    "conceptId": "arr_traversal__index_bounds",
+    "difficulty": 1,
+    "stem": "In a zero-indexed array of size 10, what is the range of valid indices?",
+    "options": [
+      "0 to 9",
+      "1 to 10",
+      "0 to 10",
+      "1 to 9"
+    ],
+    "correctIndex": 0,
+    "explanation": "Zero-indexed arrays start at index 0, so an array of length N has valid indices from 0 to N - 1 (here, 0 to 9). Option B (1 to 10) is a common misconception stemming from natural counting, but accessing index 10 in a zero-indexed array of size 10 will result in an out-of-bounds error.",
+    "reviewed": true
+  },
+  {
+    "id": "arr_traversal__easy__1",
+    "subjectId": "dsa",
+    "topicId": "arrays",
+    "subtopicId": "arr_traversal",
+    "conceptId": "arr_traversal__iteration_patterns",
+    "difficulty": 1,
+    "stem": "Which for-loop header correctly iterates forward through every element of an array `arr` of length `n` in languages like C++, Java, or C#?",
+    "options": [
+      "for (int i = 0; i < n; i++)",
+      "for (int i = 0; i <= n; i++)",
+      "for (int i = 1; i <= n; i++)",
+      "for (int i = 1; i < n; i++)"
+    ],
+    "correctIndex": 0,
+    "explanation": "The loop correctly starts at index 0 and terminates when `i` reaches `n`, visiting indices 0 through `n - 1`. Option B (`i <= n`) is a classic off-by-one error because it attempts to access `arr[n]`, which is outside the valid bounds of a zero-indexed array.",
+    "reviewed": true
+  },
+  {
+    "id": "arr_traversal__easy__2",
+    "subjectId": "dsa",
+    "topicId": "arrays",
+    "subtopicId": "arr_traversal",
+    "conceptId": "arr_traversal__iteration_patterns",
+    "difficulty": 1,
+    "stem": "Which loop header correctly iterates backward from the last element to the first element of an array of length `n`?",
+    "options": [
+      "for (int i = n - 1; i >= 0; i--)",
+      "for (int i = n; i > 0; i--)",
+      "for (int i = n - 1; i > 0; i--)",
+      "for (int i = n; i >= 0; i--)"
+    ],
+    "correctIndex": 0,
+    "explanation": "The last element of a zero-indexed array of length `n` is at index `n - 1`, and the first element is at index 0, so the loop must start at `n - 1` and run while `i >= 0`. Option B (`i = n`) starts at an out-of-bounds index `n` and stops at `1`, missing the first element located at index 0.",
+    "reviewed": true
+  },
+  {
+    "id": "arr_traversal__easy__3",
+    "subjectId": "dsa",
+    "topicId": "arrays",
+    "subtopicId": "arr_traversal",
+    "conceptId": "arr_traversal__index_bounds",
+    "difficulty": 1,
+    "stem": "What happens at runtime in Java if a program attempts to access `arr[5]` on an array declared as `int[] arr = new int[5]`?",
+    "options": [
+      "An ArrayIndexOutOfBoundsException is thrown.",
+      "The program successfully accesses the 5th element.",
+      "The program accesses whatever garbage data is in memory after the array.",
+      "The compiler automatically expands the array size to 6."
+    ],
+    "correctIndex": 0,
+    "explanation": "An array created with size 5 has valid indices 0, 1, 2, 3, and 4. Accessing index 5 is out of bounds, triggering an `ArrayIndexOutOfBoundsException` at runtime. Option B is wrong because the 5th element is actually located at index 4 due to zero-based indexing.",
+    "reviewed": true
+  },
+  {
+    "id": "arr_traversal__easy__4",
+    "subjectId": "dsa",
+    "topicId": "arrays",
+    "subtopicId": "arr_traversal",
+    "conceptId": "arr_traversal__iteration_patterns",
+    "difficulty": 1,
+    "stem": "Given the array `arr = [10, 20, 30, 40]`, what is printed by the following code?\n\n`for (int i = 0; i < arr.length - 1; i++) { System.out.print(arr[i] + \" \"); }`",
+    "options": [
+      "10 20 30",
+      "10 20 30 40",
+      "20 30 40",
+      "10 20"
+    ],
+    "correctIndex": 0,
+    "explanation": "The condition `i < arr.length - 1` evaluates to `i < 3` because `arr.length` is 4. The loop runs for `i = 0, 1, 2`, printing `10 20 30`. Option B is a common misconception where a programmer writes `i < arr.length - 1` expecting it to include the last element, confusing it with `i <= arr.length - 1` or `i < arr.length`.",
+    "reviewed": true
+  },
+  {
+    "id": "arr_traversal__easy__5",
+    "subjectId": "dsa",
+    "topicId": "arrays",
+    "subtopicId": "arr_traversal",
+    "conceptId": "arr_traversal__index_bounds",
+    "difficulty": 1,
+    "stem": "For a zero-indexed array of odd length `N`, which expression evaluates to the exact middle index of the array?",
+    "options": [
+      "(N - 1) / 2",
+      "(N + 1) / 2",
+      "N / 2 + 1",
+      "N - 1"
+    ],
+    "correctIndex": 0,
+    "explanation": "For an odd length N, indices range from 0 to N - 1. Integer division of `(N - 1) / 2` gives the exact center index (for instance, an array of size 5 has valid indices 0, 1, 2, 3, 4, and `(5 - 1) / 2 = 2`). Option B `(N + 1) / 2` is incorrect because it assumes 1-based indexing; on a zero-indexed array of size 5, `(5 + 1) / 2 = 3`, which points to the element after the middle.",
+    "reviewed": true
+  },
+  {
+    "id": "arr_traversal__easy__6",
+    "subjectId": "dsa",
+    "topicId": "arrays",
+    "subtopicId": "arr_traversal",
+    "conceptId": "arr_traversal__iteration_patterns",
+    "difficulty": 1,
+    "stem": "In Python, which sequence of numbers does `range(len(arr))` generate when `arr` has a length of 4?",
+    "options": [
+      "0, 1, 2, 3",
+      "0, 1, 2, 3, 4",
+      "1, 2, 3, 4",
+      "1, 2, 3"
+    ],
+    "correctIndex": 0,
+    "explanation": "Python's `range(stop)` generates integers starting from 0 up to, but not including, `stop`. For `len(arr) = 4`, it generates 0, 1, 2, and 3, matching valid array indices. Option B is wrong because `range` excludes the upper limit value itself, so `4` is never included.",
+    "reviewed": true
+  },
+  {
+    "id": "arr_traversal__easy__7",
+    "subjectId": "dsa",
+    "topicId": "arrays",
+    "subtopicId": "arr_traversal",
+    "conceptId": "arr_traversal__index_bounds",
+    "difficulty": 1,
+    "stem": "What are the valid indices for accessing elements in an empty array (an array with a length of 0)?",
+    "options": [
+      "There are no valid indices.",
+      "0",
+      "-1",
+      "0 to -1"
+    ],
+    "correctIndex": 0,
+    "explanation": "Since valid indices for an array of size N range from 0 to N - 1, an array of size 0 has range 0 to -1, meaning no valid non-negative indices exist. Option C (-1) is a common mistake derived mechanically from calculating N - 1 (0 - 1 = -1), but -1 represents an invalid/out-of-bounds index in standard 0-indexed memory structures.",
+    "reviewed": true
+  }
+]

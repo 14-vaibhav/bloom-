@@ -1,0 +1,1 @@
+ALTER TABLE "learning_activities" ADD COLUMN "missed_at" timestamp with time zone;

@@ -1,0 +1,19 @@
+[
+  { "name": "fast_learner", "true_learn_rate": 0.22,
+    "attendance_probability": 0.95, "noise_sigma": 0.06,
+    "true_mastery_base": 0.45 },
+  { "name": "average", "true_learn_rate": 0.12,
+    "attendance_probability": 0.82, "noise_sigma": 0.10,
+    "true_mastery_base": 0.30 },
+  { "name": "chronic_misser", "true_learn_rate": 0.13,
+    "attendance_probability": 0.45, "noise_sigma": 0.10,
+    "true_mastery_base": 0.30 },
+  { "name": "plateauer", "true_learn_rate": 0.18,
+    "attendance_probability": 0.85, "noise_sigma": 0.09,
+    "true_mastery_base": 0.35,
+    "learn_rate_collapse": { "day": 10, "factor": 0.25 } },
+  { "name": "availability_collapse", "true_learn_rate": 0.14,
+    "attendance_probability": 0.88, "noise_sigma": 0.08,
+    "true_mastery_base": 0.32,
+    "availability_shock": { "day": 12, "new_daily_hours": 1.0 } }
+]

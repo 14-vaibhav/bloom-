@@ -1,0 +1,4 @@
+{
+  "_comment": "One entry per source. `file` is relative to backend/kb-data/ (git-ignored; do not commit raw videos or PDFs). Check each licence on the source's own page and record it in `license`. Example entry: { \"id\": \"vid_cs50_w5\", \"subject_id\": \"dsa\", \"kind\": \"video\", \"title\": \"...\", \"provider\": \"...\", \"url\": \"https://www.youtube.com/watch?v=<id>\", \"license\": \"...\", \"file\": \"cs50_w5.vtt\" }",
+  "sources": []
+}

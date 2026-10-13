@@ -1,0 +1,2 @@
+ALTER TABLE "question_state" ADD COLUMN "in_revision_pool" boolean DEFAULT false NOT NULL;--> statement-breakpoint
+ALTER TABLE "question_state" ADD COLUMN "weakness_score" numeric(5, 2) DEFAULT '0' NOT NULL;

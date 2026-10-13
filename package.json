@@ -1,0 +1,29 @@
+{
+  "name": "bloom",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "dev": "concurrently -n backend,frontend -c blue,green \"npm run dev --workspace=backend\" \"npm run dev --workspace=frontend\"",
+    "migrate": "npm run migrate --workspace=backend",
+    "migrate:generate": "npm run migrate:generate --workspace=backend",
+    "seed": "npm run seed --workspace=backend",
+    "seed:reset": "npm run seed:reset --workspace=backend",
+    "test": "npm run test --workspace=backend",
+    "generate:questions": "npm run generate:questions --workspace=backend",
+    "embed:resources": "npm run embed:resources --workspace=backend",
+    "check:links": "npm run check:links --workspace=backend",
+    "ingest:video": "npm run ingest:video --workspace=backend --",
+    "ingest:slides": "npm run ingest:slides --workspace=backend --",
+    "ingest:textbook": "npm run ingest:textbook --workspace=backend --",
+    "kb:segments": "npm run kb:segments --workspace=backend --",
+    "kb:report": "npm run kb:report --workspace=backend --",
+    "eval:kb": "npm run eval:kb --workspace=backend --"
+  },
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  }
+}

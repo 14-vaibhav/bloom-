@@ -1,0 +1,11 @@
+{
+  "_comment": "Hand-written gold set for eval:kb (v4 §N7.2): 20 questions — 12 answerable from text, 5 answerable ONLY from a diagram slide (kind: diagram), 3 unanswerable from the material (kind: unanswerable). `expected` points at the source and the range where the answer lives; write it from the course material, not from retrieval output. Ranges: video {t_start,t_end} seconds · slides {slide_start,slide_end} · textbook {page_start,page_end}. `acceptable` may list further {source_id, range} that also answer it. Example entry below is a template, not a real gold item — delete it.",
+  "template": {
+    "id": "q01",
+    "kind": "answerable",
+    "question": "Why does inserting at the head of a singly linked list take constant time?",
+    "expected": { "source_id": "vid_...", "range": { "t_start": 860, "t_end": 935 } },
+    "acceptable": []
+  },
+  "questions": []
+}

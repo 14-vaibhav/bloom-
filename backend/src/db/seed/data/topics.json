@@ -1,0 +1,17 @@
+[
+  { "id": "arrays", "subjectId": "dsa", "name": "Arrays", "weight": 0.14, "baseHours": 4.0, "difficulty": 2 },
+  { "id": "linked_lists", "subjectId": "dsa", "name": "Linked Lists", "weight": 0.10, "baseHours": 3.5, "difficulty": 2 },
+  { "id": "stacks_queues", "subjectId": "dsa", "name": "Stacks & Queues", "weight": 0.12, "baseHours": 6.0, "difficulty": 2 },
+  { "id": "trees", "subjectId": "dsa", "name": "Trees", "weight": 0.20, "baseHours": 8.5, "difficulty": 3 },
+  { "id": "graphs", "subjectId": "dsa", "name": "Graphs", "weight": 0.22, "baseHours": 10.5, "difficulty": 3 },
+  { "id": "dynamic_programming", "subjectId": "dsa", "name": "Dynamic Programming", "weight": 0.22, "baseHours": 10.5, "difficulty": 4 },
+
+  { "id": "cn_fundamentals", "subjectId": "cn", "name": "OSI & TCP/IP Fundamentals", "weight": 0.55, "baseHours": 6.5, "difficulty": 2 },
+  { "id": "cn_routing_app", "subjectId": "cn", "name": "Routing & Application Layer", "weight": 0.45, "baseHours": 7.0, "difficulty": 3 },
+
+  { "id": "rdbms_relational_sql", "subjectId": "rdbms", "name": "Relational Model & SQL", "weight": 0.55, "baseHours": 6.5, "difficulty": 2 },
+  { "id": "rdbms_norm_txn", "subjectId": "rdbms", "name": "Normalization & Transactions", "weight": 0.45, "baseHours": 7.0, "difficulty": 3 },
+
+  { "id": "oop_core", "subjectId": "oop", "name": "Core Principles", "weight": 0.50, "baseHours": 5.5, "difficulty": 2 },
+  { "id": "oop_design", "subjectId": "oop", "name": "Design & Patterns", "weight": 0.50, "baseHours": 7.0, "difficulty": 3 }
+]

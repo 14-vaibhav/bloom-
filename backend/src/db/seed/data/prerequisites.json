@@ -1,0 +1,63 @@
+{
+  "topic": [
+    { "topicId": "linked_lists", "prereqId": "arrays" },
+    { "topicId": "stacks_queues", "prereqId": "arrays" },
+    { "topicId": "trees", "prereqId": "linked_lists" },
+    { "topicId": "trees", "prereqId": "stacks_queues" },
+    { "topicId": "graphs", "prereqId": "trees" },
+    { "topicId": "graphs", "prereqId": "stacks_queues" },
+    { "topicId": "dynamic_programming", "prereqId": "arrays" },
+
+    { "topicId": "cn_routing_app", "prereqId": "cn_fundamentals" },
+    { "topicId": "rdbms_norm_txn", "prereqId": "rdbms_relational_sql" },
+    { "topicId": "oop_design", "prereqId": "oop_core" }
+  ],
+  "subtopic": [
+    { "subtopicId": "arr_prefix_sum", "prereqId": "arr_traversal" },
+    { "subtopicId": "arr_two_pointer", "prereqId": "arr_traversal" },
+    { "subtopicId": "arr_sliding_window", "prereqId": "arr_two_pointer" },
+    { "subtopicId": "arr_binary_search", "prereqId": "arr_traversal" },
+
+    { "subtopicId": "ll_singly", "prereqId": "arr_traversal" },
+    { "subtopicId": "ll_doubly", "prereqId": "ll_singly" },
+    { "subtopicId": "ll_cycle_detection", "prereqId": "ll_singly" },
+    { "subtopicId": "ll_reversal", "prereqId": "ll_singly" },
+
+    { "subtopicId": "sq_stack_ops", "prereqId": "arr_traversal" },
+    { "subtopicId": "sq_monotonic_stack", "prereqId": "sq_stack_ops" },
+    { "subtopicId": "sq_queue_deque", "prereqId": "sq_stack_ops" },
+
+    { "subtopicId": "tr_traversal", "prereqId": "ll_singly" },
+    { "subtopicId": "tr_traversal", "prereqId": "sq_stack_ops" },
+    { "subtopicId": "tr_bst", "prereqId": "tr_traversal" },
+    { "subtopicId": "tr_height_depth", "prereqId": "tr_traversal" },
+    { "subtopicId": "tr_lca", "prereqId": "tr_traversal" },
+    { "subtopicId": "tr_lca", "prereqId": "tr_bst" },
+
+    { "subtopicId": "gr_representation", "prereqId": "tr_traversal" },
+    { "subtopicId": "gr_bfs", "prereqId": "gr_representation" },
+    { "subtopicId": "gr_bfs", "prereqId": "sq_queue_deque" },
+    { "subtopicId": "gr_dfs", "prereqId": "gr_representation" },
+    { "subtopicId": "gr_dfs", "prereqId": "sq_stack_ops" },
+    { "subtopicId": "gr_topo_sort", "prereqId": "gr_dfs" },
+    { "subtopicId": "gr_shortest_path", "prereqId": "gr_bfs" },
+    { "subtopicId": "gr_shortest_path", "prereqId": "gr_topo_sort" },
+
+    { "subtopicId": "dp_memoization", "prereqId": "arr_traversal" },
+    { "subtopicId": "dp_tabulation", "prereqId": "dp_memoization" },
+    { "subtopicId": "dp_knapsack", "prereqId": "dp_tabulation" },
+    { "subtopicId": "dp_lis", "prereqId": "dp_tabulation" },
+
+    { "subtopicId": "cn_dns_http", "prereqId": "cn_osi_layers" },
+    { "subtopicId": "cn_routing_algorithms", "prereqId": "cn_ip_addressing" },
+    { "subtopicId": "cn_congestion_control", "prereqId": "cn_tcp_udp" },
+
+    { "subtopicId": "rdbms_normalization", "prereqId": "rdbms_er_modeling" },
+    { "subtopicId": "rdbms_transactions_acid", "prereqId": "rdbms_sql_queries" },
+    { "subtopicId": "rdbms_indexing", "prereqId": "rdbms_keys_constraints" },
+
+    { "subtopicId": "oop_solid_principles", "prereqId": "oop_encapsulation_abstraction" },
+    { "subtopicId": "oop_composition_vs_inheritance", "prereqId": "oop_inheritance" },
+    { "subtopicId": "oop_common_design_patterns", "prereqId": "oop_polymorphism" }
+  ]
+}

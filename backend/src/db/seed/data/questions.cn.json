@@ -1,0 +1,578 @@
+[
+  {
+    "id": "cn_osi_layers__easy__0",
+    "subjectId": "cn",
+    "topicId": "cn_fundamentals",
+    "subtopicId": "cn_osi_layers",
+    "conceptId": "cn_osi_layers__layer_responsibilities",
+    "difficulty": 1,
+    "stem": "Which layer of the OSI model is primarily responsible for routing packets across different networks using logical addresses (such as IP addresses)?",
+    "options": [
+      "Data Link Layer",
+      "Network Layer",
+      "Transport Layer",
+      "Application Layer"
+    ],
+    "correctIndex": 1,
+    "explanation": "The Network Layer (Layer 3) is responsible for logical addressing (IP addresses) and routing packets across interconnected networks. The Data Link Layer is a common distractor because it also handles addressing, but it uses physical addresses (MAC addresses) for local node-to-node delivery on the same network segment rather than routing across networks.",
+    "reviewed": false
+  },
+  {
+    "id": "cn_osi_layers__easy__1",
+    "subjectId": "cn",
+    "topicId": "cn_fundamentals",
+    "subtopicId": "cn_osi_layers",
+    "conceptId": "cn_osi_layers__encapsulation",
+    "difficulty": 1,
+    "stem": "As data moves down the OSI model layers from the sender's application to the physical medium, what process is occurring?",
+    "options": [
+      "Encapsulation",
+      "Decapsulation",
+      "Defragmentation",
+      "Encryption"
+    ],
+    "correctIndex": 0,
+    "explanation": "Encapsulation is the process of wrapping data with protocol headers (and sometimes trailers) as it moves down through the OSI layers from Layer 7 to Layer 1 at the sending host. Decapsulation is a tempting choice, but it refers to the opposite process—stripping off headers as data moves up the layers at the receiving host.",
+    "reviewed": false
+  },
+  {
+    "id": "cn_osi_layers__easy__2",
+    "subjectId": "cn",
+    "topicId": "cn_fundamentals",
+    "subtopicId": "cn_osi_layers",
+    "conceptId": "cn_osi_layers__encapsulation",
+    "difficulty": 1,
+    "stem": "What is the correct Protocol Data Unit (PDU) name for data formatted at the Data Link Layer of the OSI model?",
+    "options": [
+      "Packet",
+      "Segment",
+      "Frame",
+      "Bit"
+    ],
+    "correctIndex": 2,
+    "explanation": "At the Data Link Layer (Layer 2), the Protocol Data Unit (PDU) is called a Frame. 'Packet' is a common distractor because it is often used colloquially for generic network data, but technically 'Packet' is the PDU for the Network Layer (Layer 3).",
+    "reviewed": false
+  },
+  {
+    "id": "cn_osi_layers__easy__3",
+    "subjectId": "cn",
+    "topicId": "cn_fundamentals",
+    "subtopicId": "cn_osi_layers",
+    "conceptId": "cn_osi_layers__layer_responsibilities",
+    "difficulty": 1,
+    "stem": "Which OSI layer provides end-to-end communication management, segmentation, flow control, and port-based multiplexing?",
+    "options": [
+      "Network Layer",
+      "Transport Layer",
+      "Session Layer",
+      "Data Link Layer"
+    ],
+    "correctIndex": 1,
+    "explanation": "The Transport Layer (Layer 4) manages end-to-end communication between software processes on end hosts, using port numbers for multiplexing, segmentation, and flow control. The Network Layer is a tempting distractor, but it only handles host-to-host routing across networks, not process-to-process identification via ports.",
+    "reviewed": false
+  },
+  {
+    "id": "cn_osi_layers__easy__4",
+    "subjectId": "cn",
+    "topicId": "cn_fundamentals",
+    "subtopicId": "cn_osi_layers",
+    "conceptId": "cn_osi_layers__layer_responsibilities",
+    "difficulty": 1,
+    "stem": "Which layer of the OSI model handles data formatting, syntax conversion, compression, and encryption/decryption?",
+    "options": [
+      "Presentation Layer",
+      "Session Layer",
+      "Application Layer",
+      "Transport Layer"
+    ],
+    "correctIndex": 0,
+    "explanation": "The Presentation Layer (Layer 6) acts as a data translator, ensuring that data is formatted correctly, encrypted/decrypted, and compressed for the application layer. The Session Layer is a frequent misclassification, but its role is to establish, manage, and terminate dialogue sessions between applications rather than format data syntax.",
+    "reviewed": false
+  },
+  {
+    "id": "cn_osi_layers__easy__5",
+    "subjectId": "cn",
+    "topicId": "cn_fundamentals",
+    "subtopicId": "cn_osi_layers",
+    "conceptId": "cn_osi_layers__encapsulation",
+    "difficulty": 1,
+    "stem": "During the encapsulation process on a sending host, what does each OSI layer typically add to the data received from the layer above it?",
+    "options": [
+      "A header containing layer-specific control information",
+      "A trailer containing parity bits only",
+      "A physical radio signal",
+      "An IP address and port number combined"
+    ],
+    "correctIndex": 0,
+    "explanation": "As data moves down each layer during encapsulation, that layer prepends its own header containing control details relevant to its specific protocols. A student might think every layer adds an IP address and port number, but specific addresses like IP and ports are added strictly at the Network and Transport layers, respectively.",
+    "reviewed": false
+  },
+  {
+    "id": "cn_osi_layers__easy__6",
+    "subjectId": "cn",
+    "topicId": "cn_fundamentals",
+    "subtopicId": "cn_osi_layers",
+    "conceptId": "cn_osi_layers__layer_responsibilities",
+    "difficulty": 1,
+    "stem": "Which layer of the OSI model is responsible for transmitting raw, unformatted bit streams across physical transmission media?",
+    "options": [
+      "Physical Layer",
+      "Data Link Layer",
+      "Network Layer",
+      "Transport Layer"
+    ],
+    "correctIndex": 0,
+    "explanation": "The Physical Layer (Layer 1) converts structured frames into raw signals (bits) for transmission over cables, optical fibers, or radio frequencies. The Data Link Layer is a common mistake because it directly interacts with the Physical Layer, but Data Link operates on structured frames rather than raw bit signals.",
+    "reviewed": false
+  },
+  {
+    "id": "cn_osi_layers__easy__7",
+    "subjectId": "cn",
+    "topicId": "cn_fundamentals",
+    "subtopicId": "cn_osi_layers",
+    "conceptId": "cn_osi_layers__encapsulation",
+    "difficulty": 1,
+    "stem": "In what direction does decapsulation occur on the receiving host as network traffic is processed?",
+    "options": [
+      "From Layer 1 (Physical) up to Layer 7 (Application)",
+      "From Layer 7 (Application) down to Layer 1 (Physical)",
+      "From Layer 3 (Network) directly to Layer 7 (Application)",
+      "In a non-sequential order based on payload size"
+    ],
+    "correctIndex": 0,
+    "explanation": "Decapsulation occurs on the receiving host as signals are received at Layer 1 (Physical) and passed upward to Layer 7 (Application), stripping headers at each step. Moving from Layer 7 down to Layer 1 describes encapsulation at the sender, which is the exact reverse of the receiving process.",
+    "reviewed": false
+  },
+  {
+    "id": "cn_tcp_udp__easy__0",
+    "subjectId": "cn",
+    "topicId": "cn_fundamentals",
+    "subtopicId": "cn_tcp_udp",
+    "conceptId": "cn_tcp_udp__three_way_handshake",
+    "difficulty": 1,
+    "stem": "What is the correct sequence of TCP flags exchanged during the standard three-way handshake to establish a connection?",
+    "options": [
+      "SYN, SYN-ACK, ACK",
+      "ACK, SYN, SYN-ACK",
+      "SYN, ACK, FIN",
+      "FIN, FIN-ACK, ACK"
+    ],
+    "correctIndex": 0,
+    "explanation": "The standard TCP three-way handshake begins with the client sending a SYN packet, the server responding with a SYN-ACK packet, and the client confirming with an ACK packet. Option 1 is incorrect because a client cannot acknowledge (ACK) a connection before first initiating it with a SYN segment.",
+    "reviewed": false
+  },
+  {
+    "id": "cn_tcp_udp__easy__1",
+    "subjectId": "cn",
+    "topicId": "cn_fundamentals",
+    "subtopicId": "cn_tcp_udp",
+    "conceptId": "cn_tcp_udp__reliability_vs_speed",
+    "difficulty": 1,
+    "stem": "Which transport layer protocol is typically preferred for real-time applications like online video games or voice calls where low latency is more critical than packet accuracy?",
+    "options": [
+      "TCP, because it guarantees fast delivery through flow control.",
+      "UDP, because it avoids the overhead of connection setup and retransmissions.",
+      "TCP, because it automatically skips lost packets during live video streams.",
+      "UDP, because it guarantees error-free delivery without needing sequence numbers."
+    ],
+    "correctIndex": 1,
+    "explanation": "UDP (User Datagram Protocol) is preferred for real-time applications because it does not establish a connection or retransmit lost packets, prioritizing speed and low latency over completeness. Option 0 is incorrect because TCP's reliability mechanisms (such as retransmissions and acknowledgments) actually add latency, making it slower for real-time applications.",
+    "reviewed": false
+  },
+  {
+    "id": "cn_tcp_udp__easy__2",
+    "subjectId": "cn",
+    "topicId": "cn_fundamentals",
+    "subtopicId": "cn_tcp_udp",
+    "conceptId": "cn_tcp_udp__three_way_handshake",
+    "difficulty": 1,
+    "stem": "What is the primary purpose of the TCP three-way handshake?",
+    "options": [
+      "To encrypt the payload data before transmitting it across the network.",
+      "To establish a connection and synchronize initial sequence numbers between two hosts.",
+      "To determine the fastest physical route packets should take through routers.",
+      "To compress data packets so they use less network bandwidth."
+    ],
+    "correctIndex": 1,
+    "explanation": "The primary purpose of the TCP three-way handshake is to allow both the sender and receiver to establish a connection and agree on initial sequence numbers for reliable data tracking. Option 0 is incorrect because encryption is handled at higher layers (such as TLS/SSL), not by standard TCP.",
+    "reviewed": false
+  },
+  {
+    "id": "cn_tcp_udp__easy__3",
+    "subjectId": "cn",
+    "topicId": "cn_fundamentals",
+    "subtopicId": "cn_tcp_udp",
+    "conceptId": "cn_tcp_udp__flow_control",
+    "difficulty": 1,
+    "stem": "How does TCP flow control prevent a fast sender from overwhelming a slow receiver?",
+    "options": [
+      "By using a sliding window mechanism based on the receiver's advertised window size.",
+      "By automatically dropping extra packets at intermediate routers when traffic is high.",
+      "By switching the connection from TCP to UDP when the receiver gets busy.",
+      "By encrypting the packets so the receiver processes them at a fixed speed."
+    ],
+    "correctIndex": 0,
+    "explanation": "TCP flow control relies on an advertised receive window, where the receiving host tells the sender how much buffer space is available so the sender does not transmit too much data at once. Option 1 is incorrect because dropping packets at routers is a feature of network congestion management, not end-to-end flow control between hosts.",
+    "reviewed": false
+  },
+  {
+    "id": "cn_tcp_udp__easy__4",
+    "subjectId": "cn",
+    "topicId": "cn_fundamentals",
+    "subtopicId": "cn_tcp_udp",
+    "conceptId": "cn_tcp_udp__reliability_vs_speed",
+    "difficulty": 1,
+    "stem": "A developer needs to transfer a critical financial document between two servers. Which transport protocol should they choose and why?",
+    "options": [
+      "UDP, because its connectionless nature ensures files arrive without network delays.",
+      "TCP, because it provides reliable, ordered, and error-checked delivery of data.",
+      "UDP, because it automatically retransmits any corrupted bytes in the document.",
+      "TCP, because it sends data twice as fast as UDP by ignoring sequence numbers."
+    ],
+    "correctIndex": 1,
+    "explanation": "TCP guarantees reliable, in-order, and error-checked delivery, making it essential for file transfers where every byte must arrive intact. Option 2 is incorrect because UDP does not provide retransmissions for missing or corrupted packets—lost UDP packets are simply discarded.",
+    "reviewed": false
+  },
+  {
+    "id": "cn_tcp_udp__easy__5",
+    "subjectId": "cn",
+    "topicId": "cn_fundamentals",
+    "subtopicId": "cn_tcp_udp",
+    "conceptId": "cn_tcp_udp__three_way_handshake",
+    "difficulty": 1,
+    "stem": "In the TCP three-way handshake, what is the specific role of the SYN (Synchronize) packet?",
+    "options": [
+      "To signal that the sender wants to terminate the connection gracefully.",
+      "To initiate a connection request and communicate the sender's initial sequence number.",
+      "To acknowledge that data bytes up to a specific number have been received.",
+      "To request immediate retransmission of a lost data segment."
+    ],
+    "correctIndex": 1,
+    "explanation": "The SYN flag initiates a connection and informs the remote host of the sender's starting sequence number. Option 2 describes the function of the ACK (Acknowledgment) flag, which confirms receipt of data rather than starting a new connection.",
+    "reviewed": false
+  },
+  {
+    "id": "cn_tcp_udp__easy__6",
+    "subjectId": "cn",
+    "topicId": "cn_fundamentals",
+    "subtopicId": "cn_tcp_udp",
+    "conceptId": "cn_tcp_udp__flow_control",
+    "difficulty": 1,
+    "stem": "What happens when a receiving host advertises a TCP Receive Window size of 0 to the sender?",
+    "options": [
+      "The sender immediately terminates the TCP connection with a FIN flag.",
+      "The sender pauses sending data packets until the receiver advertises a window size greater than 0.",
+      "The sender switches to UDP mode to bypass the receiver's buffer restrictions.",
+      "The sender increases its transmission rate to help clear the receiver's buffer faster."
+    ],
+    "correctIndex": 1,
+    "explanation": "A receive window of 0 signals that the receiver's incoming buffer is completely full, forcing the sender to pause data transmission until buffer space opens up. Option 0 is incorrect because a zero window size is a temporary flow control pause, not a signal to close (terminate) the connection.",
+    "reviewed": false
+  },
+  {
+    "id": "cn_tcp_udp__easy__7",
+    "subjectId": "cn",
+    "topicId": "cn_fundamentals",
+    "subtopicId": "cn_tcp_udp",
+    "conceptId": "cn_tcp_udp__reliability_vs_speed",
+    "difficulty": 1,
+    "stem": "Why is UDP described as a 'connectionless' protocol compared to TCP?",
+    "options": [
+      "UDP can only be used on local networks that do not require routing.",
+      "UDP transmits data without establishing a formal connection session or maintaining state.",
+      "UDP datagrams do not contain destination port numbers or IP addresses.",
+      "UDP requires physical cable connections, whereas TCP works over wireless."
+    ],
+    "correctIndex": 1,
+    "explanation": "UDP is connectionless because it sends datagrams directly without performing a handshake or tracking connection state between the sender and receiver. Option 2 is incorrect because UDP headers still contain source and destination ports, and rely on IP headers for IP addressing to route packets correctly.",
+    "reviewed": false
+  },
+  {
+    "id": "cn_ip_addressing__easy__0",
+    "subjectId": "cn",
+    "topicId": "cn_fundamentals",
+    "subtopicId": "cn_ip_addressing",
+    "conceptId": "cn_ip_addressing__address_classes",
+    "difficulty": 1,
+    "stem": "Which IPv4 address class uses a default subnet mask of 255.0.0.0?",
+    "options": [
+      "Class A",
+      "Class B",
+      "Class C",
+      "Class D"
+    ],
+    "correctIndex": 0,
+    "explanation": "Class A addresses reserve 8 bits for the network portion, giving them a default subnet mask of 255.0.0.0. Class B uses 255.255.0.0 (16 network bits), which is a common misconception if a student mixes up the standard default masks for address classes.",
+    "reviewed": false
+  },
+  {
+    "id": "cn_ip_addressing__easy__1",
+    "subjectId": "cn",
+    "topicId": "cn_fundamentals",
+    "subtopicId": "cn_ip_addressing",
+    "conceptId": "cn_ip_addressing__cidr_notation",
+    "difficulty": 1,
+    "stem": "In CIDR notation, what does the prefix suffix '/24' at the end of an IP address represent?",
+    "options": [
+      "The number of contiguous 1s representing the network portion",
+      "The total number of usable host IP addresses on the network",
+      "The maximum transmission unit (MTU) size for the network",
+      "The physical port number assigned to the network interface"
+    ],
+    "correctIndex": 0,
+    "explanation": "In CIDR notation, the number following the slash (e.g., /24) specifies the exact number of bits set to 1 in the subnet mask, which define the network prefix. A common mistake is thinking /24 directly states the host count, but host count is calculated from the remaining bits (32 - 24 = 8 bits, yielding 254 usable hosts).",
+    "reviewed": false
+  },
+  {
+    "id": "cn_ip_addressing__easy__2",
+    "subjectId": "cn",
+    "topicId": "cn_fundamentals",
+    "subtopicId": "cn_ip_addressing",
+    "conceptId": "cn_ip_addressing__subnet_masking",
+    "difficulty": 1,
+    "stem": "What is the primary function of a subnet mask in IPv4 networking?",
+    "options": [
+      "To distinguish between the network portion and host portion of an IP address",
+      "To translate private IP addresses into public IP addresses for internet routing",
+      "To map dynamic IP addresses to physical MAC addresses on a local link",
+      "To encrypt outgoing data packets to secure communication"
+    ],
+    "correctIndex": 0,
+    "explanation": "A subnet mask performs a bitwise AND operation with an IP address to divide it into a network ID and a host ID. Option B describes NAT (Network Address Translation), which is a common misconception where students confuse subnetting with address translation.",
+    "reviewed": false
+  },
+  {
+    "id": "cn_ip_addressing__easy__3",
+    "subjectId": "cn",
+    "topicId": "cn_fundamentals",
+    "subtopicId": "cn_ip_addressing",
+    "conceptId": "cn_ip_addressing__address_classes",
+    "difficulty": 1,
+    "stem": "Which IPv4 address range corresponds to the first octet of a legacy Class C network?",
+    "options": [
+      "192 to 223",
+      "128 to 191",
+      "1 to 127",
+      "224 to 239"
+    ],
+    "correctIndex": 0,
+    "explanation": "Class C IPv4 addresses have a first octet ranging from 192 to 223 (binary starts with 110). The range 128 to 191 corresponds to Class B addresses, which is the most common distractor when students misremember class boundaries.",
+    "reviewed": false
+  },
+  {
+    "id": "cn_ip_addressing__easy__4",
+    "subjectId": "cn",
+    "topicId": "cn_fundamentals",
+    "subtopicId": "cn_ip_addressing",
+    "conceptId": "cn_ip_addressing__cidr_notation",
+    "difficulty": 1,
+    "stem": "What is the dotted-decimal subnet mask equivalent to the CIDR prefix '/16'?",
+    "options": [
+      "255.255.0.0",
+      "255.0.0.0",
+      "255.255.255.0",
+      "255.255.255.255"
+    ],
+    "correctIndex": 0,
+    "explanation": "A CIDR prefix of /16 means 16 network bits are set to 1, filling two full octets (8 bits + 8 bits), resulting in 255.255.0.0. Students often mistakenly choose 255.255.255.0 because it is the most frequently encountered mask in home and lab settings, but that corresponds to /24.",
+    "reviewed": false
+  },
+  {
+    "id": "cn_ip_addressing__easy__5",
+    "subjectId": "cn",
+    "topicId": "cn_fundamentals",
+    "subtopicId": "cn_ip_addressing",
+    "conceptId": "cn_ip_addressing__subnet_masking",
+    "difficulty": 1,
+    "stem": "Which dotted-decimal subnet mask represents the default mask for a Class B network?",
+    "options": [
+      "255.255.0.0",
+      "255.0.0.0",
+      "255.255.255.0",
+      "255.255.255.128"
+    ],
+    "correctIndex": 0,
+    "explanation": "Class B networks allocate 16 bits for the network portion, which produces a default subnet mask of 255.255.0.0. Option C (255.255.255.0) is incorrect because it allocates 24 network bits, making it the default mask for Class C networks.",
+    "reviewed": false
+  },
+  {
+    "id": "cn_ip_addressing__easy__6",
+    "subjectId": "cn",
+    "topicId": "cn_fundamentals",
+    "subtopicId": "cn_ip_addressing",
+    "conceptId": "cn_ip_addressing__cidr_notation",
+    "difficulty": 1,
+    "stem": "How is the subnet mask 255.255.255.0 represented in CIDR notation?",
+    "options": [
+      "/24",
+      "/16",
+      "/8",
+      "/32"
+    ],
+    "correctIndex": 0,
+    "explanation": "The mask 255.255.255.0 contains three full octets of 1s (8 + 8 + 8 = 24 bits), which is written as /24 in CIDR prefix notation. Students frequently select /16 by miscounting the octets or confusing Class B (/16) with Class C (/24).",
+    "reviewed": false
+  },
+  {
+    "id": "cn_ip_addressing__easy__7",
+    "subjectId": "cn",
+    "topicId": "cn_fundamentals",
+    "subtopicId": "cn_ip_addressing",
+    "conceptId": "cn_ip_addressing__address_classes",
+    "difficulty": 1,
+    "stem": "What is the range of the first octet for a legacy Class A IPv4 address?",
+    "options": [
+      "1 to 127",
+      "128 to 191",
+      "192 to 223",
+      "224 to 239"
+    ],
+    "correctIndex": 0,
+    "explanation": "Class A addresses use a leading binary bit of 0, putting the first octet in the range of 1 to 127 (with 127 reserved for loopback testing). The range 128 to 191 belongs to Class B networks, which is a common misidentification.",
+    "reviewed": false
+  },
+  {
+    "id": "cn_routing_algorithms__easy__0",
+    "subjectId": "cn",
+    "topicId": "cn_routing_app",
+    "subtopicId": "cn_routing_algorithms",
+    "conceptId": "cn_routing_algorithms__link_state",
+    "difficulty": 1,
+    "stem": "In a link-state routing algorithm, what information does each router flood to all other routers in the network?",
+    "options": [
+      "Its entire routing table containing estimated costs to all known destinations.",
+      "The identity and cost of its directly connected links.",
+      "Only the shortest path distance to the single destination node with highest traffic.",
+      "A complete list of active host IP addresses on its local subnet."
+    ],
+    "correctIndex": 1,
+    "explanation": "Link-state algorithms require each router to broadcast (flood) Link State Advertisements (LSAs) containing the status and cost of only its directly connected links. Option 0 is incorrect because broadcasting the entire routing table to neighbors is the defining behavior of distance-vector algorithms, not link-state algorithms.",
+    "reviewed": false
+  },
+  {
+    "id": "cn_routing_algorithms__easy__1",
+    "subjectId": "cn",
+    "topicId": "cn_routing_app",
+    "subtopicId": "cn_routing_algorithms",
+    "conceptId": "cn_routing_algorithms__distance_vector",
+    "difficulty": 1,
+    "stem": "Which routing algorithm is prone to the 'count-to-infinity' problem when a network link fails?",
+    "options": [
+      "Link-state routing",
+      "Distance-vector routing",
+      "Path-vector routing",
+      "Hierarchical link routing"
+    ],
+    "correctIndex": 1,
+    "explanation": "Distance-vector routing relies on indirect updates from neighbors, which can lead to routing loops and slow convergence known as the 'count-to-infinity' problem when a link breaks. Option 0 is incorrect because link-state protocols provide every router with a complete network map, allowing them to quickly detect link failures and recompute loop-free paths using Dijkstra's algorithm.",
+    "reviewed": false
+  },
+  {
+    "id": "cn_routing_algorithms__easy__2",
+    "subjectId": "cn",
+    "topicId": "cn_routing_app",
+    "subtopicId": "cn_routing_algorithms",
+    "conceptId": "cn_routing_algorithms__shortest_path_routing",
+    "difficulty": 1,
+    "stem": "Which shortest-path algorithm is standardly used by link-state routing protocols such as OSPF to calculate the least-cost paths?",
+    "options": [
+      "Bellman-Ford algorithm",
+      "Dijkstra's algorithm",
+      "Prim's algorithm",
+      "Floyd-Warshall algorithm"
+    ],
+    "correctIndex": 1,
+    "explanation": "Link-state protocols use Dijkstra's algorithm to compute the shortest path from the local router (source) to all other nodes in the network using the complete topology map. Option 0 is incorrect because the Bellman-Ford algorithm is the mathematical basis for distance-vector protocols, not link-state protocols.",
+    "reviewed": false
+  },
+  {
+    "id": "cn_routing_algorithms__easy__3",
+    "subjectId": "cn",
+    "topicId": "cn_routing_app",
+    "subtopicId": "cn_routing_algorithms",
+    "conceptId": "cn_routing_algorithms__distance_vector",
+    "difficulty": 1,
+    "stem": "Which algorithm serves as the mathematical foundation for distance-vector routing protocols such as RIP?",
+    "options": [
+      "Dijkstra's algorithm",
+      "Bellman-Ford algorithm",
+      "Kruskal's algorithm",
+      "Breadth-First Search (BFS)"
+    ],
+    "correctIndex": 1,
+    "explanation": "Distance-vector routing relies on the Bellman-Ford equation, where a router updates its distance vector using the vectors reported by its directly connected neighbors. Option 0 is incorrect because Dijkstra's algorithm is used in link-state routing and requires global knowledge of the network topology rather than iterative vector exchanges.",
+    "reviewed": false
+  },
+  {
+    "id": "cn_routing_algorithms__easy__4",
+    "subjectId": "cn",
+    "topicId": "cn_routing_app",
+    "subtopicId": "cn_routing_algorithms",
+    "conceptId": "cn_routing_algorithms__distance_vector",
+    "difficulty": 1,
+    "stem": "In a classic distance-vector routing implementation, with which routers does a node directly exchange its routing updates?",
+    "options": [
+      "All routers across the entire network via broadcast flooding.",
+      "Only its directly connected neighbors.",
+      "Only a designated central root router.",
+      "Only routers that are exactly two hops away."
+    ],
+    "correctIndex": 1,
+    "explanation": "In distance-vector routing, nodes communicate solely with their immediate physical neighbors, periodically sharing their estimated distances to all destinations. Option 0 is incorrect because sending information to all routers in the entire network via flooding is characteristic of link-state algorithms.",
+    "reviewed": false
+  },
+  {
+    "id": "cn_routing_algorithms__easy__5",
+    "subjectId": "cn",
+    "topicId": "cn_routing_app",
+    "subtopicId": "cn_routing_algorithms",
+    "conceptId": "cn_routing_algorithms__link_state",
+    "difficulty": 1,
+    "stem": "What main structural advantage does link-state routing offer over distance-vector routing regarding network topology awareness?",
+    "options": [
+      "Each router maintains only a list of distances to its direct neighbors.",
+      "Each router constructs a complete, independent map of the entire network topology.",
+      "Routers store no routing information locally, relying on central control packets.",
+      "It eliminates the need for calculating link metrics or costs."
+    ],
+    "correctIndex": 1,
+    "explanation": "In link-state routing, every router receives link-state packets from all nodes, giving each router a full, identical view of the entire network graph. Option 0 is incorrect because knowing only distance estimates from neighbors describes the limited, localized view of distance-vector routing.",
+    "reviewed": false
+  },
+  {
+    "id": "cn_routing_algorithms__easy__6",
+    "subjectId": "cn",
+    "topicId": "cn_routing_app",
+    "subtopicId": "cn_routing_algorithms",
+    "conceptId": "cn_routing_algorithms__shortest_path_routing",
+    "difficulty": 1,
+    "stem": "When calculating the shortest path between nodes in a network graph, what does the weight (cost) of an edge typically represent?",
+    "options": [
+      "The total number of nodes in the entire autonomous system.",
+      "A performance metric such as link delay, inverse bandwidth, or hop count.",
+      "The exact physical distance of the connecting cable measured in kilometers.",
+      "The total count of active client devices attached to that router."
+    ],
+    "correctIndex": 1,
+    "explanation": "Edge costs in network routing algorithms reflect metrics like latency, link bandwidth, or administrative cost associated with sending traffic over that specific link. Option 2 is incorrect because physical distance in kilometers is rarely used directly; a short physical wireless link may have high latency/cost, while a long fiber link may have high bandwidth/low cost.",
+    "reviewed": false
+  },
+  {
+    "id": "cn_routing_algorithms__easy__7",
+    "subjectId": "cn",
+    "topicId": "cn_routing_app",
+    "subtopicId": "cn_routing_algorithms",
+    "conceptId": "cn_routing_algorithms__distance_vector",
+    "difficulty": 1,
+    "stem": "Which mechanism is commonly implemented in distance-vector routing to help prevent simple two-node routing loops?",
+    "options": [
+      "Link-state flooding",
+      "Split horizon",
+      "Dijkstra tree generation",
+      "Spanning tree pruning"
+    ],
+    "correctIndex": 1,
+    "explanation": "Split horizon prevents two-node loops by dictating that if a router learns a route from a specific neighbor, it must not advertise that same route back to that neighbor. Option 0 is incorrect because link-state flooding is a link-state mechanism used to distribute topology information, not a loop-mitigation rule for distance-vector protocols.",
+    "reviewed": false
+  }
+]
