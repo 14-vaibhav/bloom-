@@ -1,14 +1,22 @@
 import type { KbChunk, SourceKind } from "./types";
 
-export const KIND_LABEL: Record<SourceKind, string> = { video: "Lecture", slides: "Slides", textbook: "Textbook" };
-
-export const KIND_STYLE: Record<SourceKind, string> = {
-  video: "border-sky-800 bg-sky-500/10 text-sky-200 hover:border-sky-500",
-  slides: "border-violet-800 bg-violet-500/10 text-violet-200 hover:border-violet-500",
-  textbook: "border-emerald-800 bg-emerald-500/10 text-emerald-200 hover:border-emerald-500",
+export const KIND_LABEL: Record<SourceKind, string> = {
+  video: "Lecture",
+  slides: "Slides",
+  textbook: "Textbook",
 };
 
-export const KIND_ICON: Record<SourceKind, string> = { video: "▶", slides: "▤", textbook: "❡" };
+export const KIND_STYLE: Record<SourceKind, string> = {
+  video: "border-zinc-800 bg-zinc-900/90 text-zinc-300 hover:border-zinc-600 hover:text-zinc-100",
+  slides: "border-zinc-800 bg-zinc-900/90 text-zinc-300 hover:border-zinc-600 hover:text-zinc-100",
+  textbook: "border-zinc-800 bg-zinc-900/90 text-zinc-300 hover:border-zinc-600 hover:text-zinc-100",
+};
+
+export const KIND_ICON: Record<SourceKind, string> = {
+  video: "▶",
+  slides: "▤",
+  textbook: "❡",
+};
 
 /** YouTube watch/short URL + a start time → the embed URL (null when the source is not on YouTube). */
 export function youtubeEmbed(deepLink: string, tStart: number): string | null {
