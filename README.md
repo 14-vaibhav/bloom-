@@ -164,17 +164,48 @@ A built-in **Demo Panel** lets you fast-forward time and break things on purpose
 
 ## 🚀 Run it locally
 
-```bash
-# Requires Postgres with the pgvector extension
-createdb bloom
-psql -d bloom -c "CREATE EXTENSION IF NOT EXISTS vector;"
+### Prerequisites
 
-cp backend/.env.example backend/.env   # set DATABASE_URL (and GEMINI_API_KEY for AI features)
+- **Node.js 18+** and npm
+- **Postgres 14+ with the [pgvector](https://github.com/pgvector/pgvector) extension.** The easiest way is Docker (below).
+- **Gemini API key** (optional for the seeded demo; needed for the cited Tutor, ingestion and question generation). Get one at [Google AI Studio](https://aistudio.google.com/apikey).
+- **poppler** (`pdftotext`, `pdftoppm`) only if you ingest your own textbooks (`brew install poppler` / `apt install poppler-utils`).
+
+### Installation
+
+```bash
+git clone https://github.com/14-vaibhav/bloom-.git bloom
+cd bloom
 npm install
-npm run migrate
-npm run seed
+
+# Start Postgres + pgvector (port 5433)
+docker compose up -d postgres
+# ...or use your own Postgres:
+#   createdb bloom && psql -d bloom -c "CREATE EXTENSION IF NOT EXISTS vector;"
+
+# Configure environment
+cp .env.example backend/.env
+# Edit backend/.env: set GEMINI_API_KEY, and DATABASE_URL if you're not using the Docker database
+```
+
+Key variables (see [`.env.example`](.env.example) for all of them):
+
+| Variable | Purpose |
+|---|---|
+| `DATABASE_URL` | Postgres connection string. The default matches `docker-compose.yml`. |
+| `GEMINI_API_KEY` | Gemini embeddings, slide vision and answer generation |
+| `LLM_ENABLED` | Set to `false` to run entirely without the model |
+| `AUTH_REQUIRED` / `AUTH_SECRET` | Per-student auth, off by default |
+
+### Running the project
+
+```bash
+npm run migrate    # create tables
+npm run seed       # load demo data
 npm run dev        # backend :4000, frontend :5173
 ```
+
+Open **http://localhost:5173**.
 
 Run tests with `npm run test`.
 
