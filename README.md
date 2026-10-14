@@ -1,131 +1,225 @@
-# Bloom — Multimodal Study Companion
+# 🌸 Bloom
 
-An AI study companion that has read your course. It unifies lecture videos, slides and a textbook into one source-cited knowledge base, then uses it to tutor and to run adaptive assessments. **Every tutor answer and every question points at an exact lecture timestamp, slide or textbook page — and a validator rejects any answer whose citations do not check out.** Underneath is the v3 learning autopilot, which is the personalisation engine: it predicts how a study session will go, tests whether it was right, and rewrites the plan the moment reality disagrees. Not "goal in → LLM → timetable → done" — a closed loop that observes, updates beliefs, evaluates triggers, decides scope, plans, validates, repairs, and acts, on its own clock.
+### A study companion that cites its sources, notices when you're slipping, and fixes your plan before you fall behind.
 
-## What the study companion adds (v4)
+Students don't fail because they lack material. They fail because the material is scattered across lecture videos, slides and textbooks, their study plan never adapts, and nobody tells them they're about to forget what they learned last week.
 
-- **One knowledge base, three source kinds** (`backend/src/kb/`): video is indexed by its caption transcript in 60–90 s windows; slides are rendered to images and **read by a vision model** (so a diagram-only slide becomes searchable text); the textbook is split per page with exact page numbers. Every chunk keeps a deterministic locator (`{t_start,t_end}`, `{slide}`, `{page}`), never one written by an LLM.
-- **Deterministic tagging**: chunks attach to the existing subtopic tree by embedding similarity above a tuned threshold; no LLM assigns a tag.
-- **Cited tutor** (`backend/src/tutor/`): hybrid retrieval (vector + lexical, reciprocal-rank fused, with a kind-diversity swap so one answer can cite a lecture, a slide and a page together). Code picks the mode (`explain` / `connect` / `challenge`) from the student's mastery and orders citations by their measured `format_efficacy`; the LLM only writes the words. A pure-function **citation validator** (K1–K6) gates every answer: it must cite retrieved chunks, quote 6–30 words that really appear in them, and every locator must resolve. One repair round, then an extractive fallback; with no evidence the tutor declines and shows the nearest passages. The tutor never writes plans or mastery.
-- **Grounded assessments**: MCQs are generated offline from a chunk and accepted only if their `evidence_quote` is found in it; the demo student only ever receives human-reviewed questions. A wrong answer links to the exact source passages.
-- **Tutoring feeds the loop**: two tutor questions on one subtopic within 48 simulated hours, while confidence is below 0.70, fire `CONFUSION_SIGNAL` → a PATCH that inserts an `IMMEDIATE_TEST`. Zero LLM calls.
-- **KB segments become resources**, so the unchanged planner, Curator and live URL verification work on course material.
+Bloom fixes both problems:
 
-## What it does
+1. **Ask anything, get a proof, not a guess.** Bloom merges lecture videos, slides and a textbook into one searchable knowledge base. Every answer points to the exact **video timestamp, slide or textbook page**, and any answer whose citation doesn't check out is rejected before you see it.
+2. **A plan that reacts to you.** Miss a session, bomb a quiz, or start forgetting a topic, and Bloom rewrites your schedule automatically, without being asked.
 
-- Builds a deadline-aware, prerequisite-ordered study plan per subject (DSA, Computer Networks, RDBMS, OOP).
-- Tracks mastery per subtopic with a deterministic belief model (BKT-style update, confidence decay, learn-rate recalibration) — the LLM never assigns a number.
-- Runs autonomously on a clock tick: detects missed sessions, low scores, forgetting risk (pre-emptive active recall from a retention forecast), and deadline risk — without being asked.
-- Chooses its own intervention **scope**: a single miss gets a sub-second PATCH with zero LLM calls; a wrong belief about the student gets a FULL replan.
-- Refuses to fake a schedule it knows won't work: when required hours exceed available hours, it negotiates with quantified options (extend deadline / add time / drop scope) instead of committing an infeasible plan.
-- Degrades gracefully under tool failure: a broken resource-lookup tool doesn't block planning — the agent reuses the last-known-good resource, marks the activity `provisional`, and re-plans automatically once the tool recovers.
+---
 
-## Architecture
+## 🎬 Demo
 
-```
-Frontend (React + Vite)  ──HTTP/SSE──►  Backend (Express + TS)
-                                             │
-                          ┌──────────────────┼──────────────────┐
-                          │                  │                  │
-                    Agent loop         Tool dispatcher      Postgres + pgvector
-                 (observe→update→          (5 tools,         (mastery, plans,
-                  evaluate→decide→        21 ops, circuit      activities, runs,
-                  retrieve→plan→           breakers,           events, eval data)
-                  validate→repair→         retry/backoff)
-                  commit→act)
-```
+<!-- Upload your video to GitHub (drag & drop into this file in the GitHub editor, or into an issue/PR comment) and paste the generated link below, replacing this block. -->
 
-- **Agent loop** (`backend/src/agent/`) — the 11-phase cycle: observe deltas, update beliefs (decay + BKT-lite), evaluate triggers → scope, run the deterministic gap engine plus (optionally) three LLM specialists, retrieve via tools, plan/patch, validate, repair (max 3 rounds) or negotiate, commit everything in one transaction, emit events.
-- **Tools** (`backend/src/tools/`) — Performance, Educational RAG (with live URL verification), Calendar, Question Bank, Student State, and Knowledge Base — 24 operations behind one logged dispatcher with per-tool circuit breakers (`tool_health`) and defined degraded-mode behavior.
-- **Core** (`backend/src/core/`) — pure, deterministic: mastery/decay math, gap-priority scoring, action selection baseline, the scheduler/slotter, the 12-check plan validator and repair operators, negotiation option generation.
-- **Frontend** (`frontend/src/`) — 9 screens (Dashboard, Study Plan, Topic Progress, Library, Tutor, Assessment, Agent Activity, Plan Changes, Eval), a Source Viewer side panel, and a floating Demo Panel that advances simulated time and can break the RAG tool, the knowledge base (`Break KB`) and the tutor's next citation (`Break citation`) live.
+> **📹 Demo video: coming here**
+>
+> *(Paste the GitHub-hosted video link or drag the file into this spot.)*
 
-## Deterministic vs LLM
+<!-- Optional: add screenshots -->
+<!-- ![Dashboard](docs/screenshots/dashboard.png) -->
+<!-- ![Cited Tutor](docs/screenshots/tutor.png) -->
 
-| LLM decides | Code decides |
+---
+
+## ✨ What makes it different
+
+| | |
 |---|---|
-| Root cause of a wrong answer (Diagnostician) | Mastery, confidence, learn rate (BKT-lite update) |
-| Resource choice among top-3 + justification (Curator) | Calendar arithmetic, slot/collision detection |
-| Strategy, budget, negotiation wording (Strategist) | Prerequisite ordering, gap-priority scoring |
-| Daily summary phrasing | Validation, repair limits, transactional persistence |
+| 📚 **One brain for all your material** | Lecture video, slides (diagrams included, read by a vision model) and textbook pages live in a single index. |
+| 🔗 **Every answer is verifiable** | One answer can cite a lecture at 12:40, slide 4 and textbook page 87 together. Click a citation to jump straight to the source. |
+| 🛡️ **Citations are checked, not trusted** | A validator confirms the passage exists, the quoted words really appear in it, and the location resolves. Fails → one repair attempt → safe fallback. No evidence? Bloom says so instead of making something up. |
+| 🧭 **Self-correcting study plan** | Tracks mastery per topic, forecasts forgetting, and re-plans on its own when you miss sessions, score low, or a deadline is at risk. |
+| ⚖️ **Honest about impossible goals** | If your deadline can't fit the work, Bloom doesn't fake a schedule. It offers real trade-offs: extend the deadline, add study time, or cut scope. |
+| 🔌 **Keeps working when things break** | If a tool fails, Bloom falls back to the last good result, flags it, and recovers automatically. You can break things live in the demo. |
+| 🎯 **Questions that come from your course** | Quiz questions are generated from your material and accepted only if the answer is quoted from it. A wrong answer links back to the exact passage that explains it. |
 
-`LLM_ENABLED=false` runs the full loop with deterministic fallbacks for all three specialists — no LLM call is ever required for the agent to function correctly.
+---
 
-## Real vs simulated
+## 🏗️ Architecture
 
-| Real | Simulated or limited |
+```mermaid
+flowchart LR
+    subgraph Sources["Course Material"]
+        V["🎥 Lecture videos<br/>(transcripts)"]
+        S["🖼️ Slides<br/>(read by vision model)"]
+        T["📖 Textbook<br/>(per page)"]
+    end
+
+    subgraph Ingest["Ingestion Pipeline"]
+        I["Chunk + locate<br/>timestamp / slide / page"]
+        E["Embed"]
+        G["Tag to topic tree<br/>(similarity threshold)"]
+    end
+
+    subgraph Store["Postgres + pgvector"]
+        KB[("Knowledge Base")]
+        ST[("Mastery, plans,<br/>events, activities")]
+    end
+
+    subgraph Backend["Backend (Express + TypeScript)"]
+        TUT["Cited Tutor<br/>hybrid search + validator"]
+        AGT["Study Agent Loop<br/>observe → plan → act"]
+        CORE["Core Engine<br/>mastery · scheduling · validation"]
+        TOOLS["Tool Layer<br/>circuit breakers + retries"]
+    end
+
+    FE["🖥️ Frontend<br/>React + Vite + Tailwind"]
+
+    V --> I
+    S --> I
+    T --> I
+    I --> E --> G --> KB
+
+    FE <-->|"HTTP + live stream"| Backend
+    TUT --> KB
+    AGT --> CORE
+    AGT --> TOOLS
+    TOOLS --> KB
+    TOOLS --> ST
+    CORE --> ST
+```
+
+**Design principle:** the AI writes words, code makes decisions. Mastery scores, schedules, deadlines, citation locations and validation are all deterministic code. The language model only handles explanations, diagnosing why an answer was wrong, choosing among pre-vetted resources, and phrasing. The whole system still runs with the model turned off.
+
+---
+
+## 🔄 How it works
+
+### 1. Asking a question
+
+```mermaid
+sequenceDiagram
+    actor Student
+    participant Tutor
+    participant KB as Knowledge Base
+    participant LLM
+    participant Val as Citation Validator
+
+    Student->>Tutor: "How does a queue differ from a stack?"
+    Tutor->>KB: Hybrid search (meaning + keywords)
+    KB-->>Tutor: Best passages from video, slide & textbook
+    Tutor->>Tutor: Pick teaching style from student's mastery
+    Tutor->>LLM: Write answer using ONLY these passages
+    LLM-->>Tutor: Draft with quotes + citations
+    Tutor->>Val: Do the sources exist? Are the quotes real?
+    alt Valid
+        Val-->>Student: ✅ Answer with clickable timestamp / slide / page
+    else Invalid
+        Val->>LLM: One repair attempt
+        Val-->>Student: Fixed answer, or the raw source passages
+    end
+```
+
+### 2. Staying on track
+
+```mermaid
+flowchart TD
+    A["⏱️ Clock tick / new activity"] --> B["Observe<br/>misses, scores, time passed"]
+    B --> C["Update beliefs<br/>mastery · decay · learning speed"]
+    C --> D{"Something<br/>off?"}
+    D -->|"No"| Z["Carry on"]
+    D -->|"Small miss"| P["⚡ Quick patch<br/>instant, no AI call"]
+    D -->|"Wrong picture of student"| F["🔁 Full replan"]
+    D -->|"Can't fit deadline"| N["⚖️ Negotiate<br/>extend · add time · cut scope"]
+    P --> V["Validate plan<br/>12 checks"]
+    F --> V
+    V -->|"Fails"| R["Repair<br/>up to 3 rounds"]
+    R --> V
+    V -->|"Passes"| CM["Commit in one transaction<br/>+ notify the student"]
+    N --> CM
+```
+
+Triggers include: missed sessions, low quiz scores, **forgetting risk** (Bloom schedules recall practice *before* you forget), approaching deadlines, and **confusion** (ask about the same topic twice while unsure and a quick test is inserted automatically).
+
+---
+
+## 🖥️ The app
+
+Nine screens: **Dashboard · Study Plan · Topic Progress · Library · Tutor · Assessment · Agent Activity · Plan Changes · Eval**, plus a **Source Viewer** side panel for jumping to cited material.
+
+A built-in **Demo Panel** lets you fast-forward time and break things on purpose (the resource lookup, the knowledge base, a tutor citation) to watch Bloom degrade gracefully and recover.
+
+---
+
+## 🧰 Tech stack
+
+| Layer | Tech |
 |---|---|
-| Three source kinds ingested into one index with exact locators | Ingestion is an offline CLI, not an upload flow |
-| A vision model reads every slide, including diagram-only slides | Video is indexed by transcript; frames are not analysed (the `ffmpeg` keyframe step is not built) |
-| Every shown tutor answer passed a citation check (K1–K4 hard, K5–K6 soft) | The check proves the source exists and was quoted, **not** that the paraphrase is faithful — the faithfulness number in `eval:kb` is hand-graded |
-| Questions generated from the material, quote-verified, and (for the demo slice) human-reviewed | One course slice; other subjects have no ingested material and the UI says so |
-| Mastery model, planner, validator, resilience layer (v3), live URL verification of KB deep links | The passage of time (`sim_now`); student answers in the learner-simulation eval |
-| Circuit breakers incl. the KB tool: `Break KB` makes the tutor refuse to answer uncited while assessments keep working | CN/RDBMS/OOP question banks are LLM-generated and **not** human-reviewed (`reviewed: false`) |
+| Frontend | React, Vite, Tailwind |
+| Backend | Node, Express, TypeScript, Zod |
+| Data | Postgres + pgvector, Drizzle ORM |
+| AI | Gemini (embeddings, vision for slides, text generation) |
+| Testing | Vitest |
 
-### Built before this hackathon / built during it
+---
 
-Bloom v3 — the agent loop, mastery model, planner/validator/repair, resilience layer, the five original tools, the learner-simulation harness and the first seven screens — **predates** the hackathon. The knowledge base, ingesters, vision step, cited tutor, citation validator, KB tool (tool 6), grounded question generation, `CONFUSION_SIGNAL`, `eval:kb`, and the Library / Tutor / Source Viewer screens were built **during** it. Tag the pre-hackathon state in git (`git tag pre-mmhack`) to make that split provable.
-
-### Knowledge-base evaluation
-
-`npm run eval:kb` reads only (no students or turns are written) and produces `docs/kb-eval-report.md` and `docs/kb-eval-results.json`: retrieval hit@5, first-pass and shown-answer citation validity, cross-source rate, diagram questions answered, correct refusals, hand-graded faithfulness and latency p50/p95, over a 20-question gold set you write in `backend/src/eval/kb/gold.json`. **No numbers are reported here until that gold set exists and the evaluation has been run.**
-
-## Setup
+## 🚀 Run it locally
 
 ```bash
-# Postgres running locally with the pgvector extension available
+# Requires Postgres with the pgvector extension
 createdb bloom
 psql -d bloom -c "CREATE EXTENSION IF NOT EXISTS vector;"
 
-cp backend/.env.example backend/.env   # fill in DATABASE_URL at minimum
+cp backend/.env.example backend/.env   # set DATABASE_URL (and GEMINI_API_KEY for AI features)
 npm install
 npm run migrate
 npm run seed
-npm run test        # backend test suite
-npm run dev          # backend on :4000, frontend on :5173 (or next free port)
+npm run dev        # backend :4000, frontend :5173
 ```
 
-Course material (offline; needs `GEMINI_API_KEY`, plus `pdftotext`/`pdftoppm` from poppler):
+Run tests with `npm run test`.
+
+<details>
+<summary><b>Load your own course material</b></summary>
+
+Needs `GEMINI_API_KEY`, plus `pdftotext` / `pdftoppm` (poppler).
+
 ```bash
-# 1. Put captions / PDFs in backend/kb-data/ and describe them in backend/kb-manifest.json (record each licence)
-npm run ingest:video && npm run ingest:slides && npm run ingest:textbook   # ingest + embed + tag, idempotent
-npm run kb:report                    # per-source counts and the subtopic × source-kind coverage grid
-npm run kb:tune-tau -- --export dsa  # label 30 chunks, then re-run without --export to pick the tagging threshold
-npm run kb:segments                  # KB segments → resources rows for the planner
+# Describe your files in backend/kb-manifest.json, then:
+npm run ingest:video && npm run ingest:slides && npm run ingest:textbook
+npm run kb:report                                  # coverage overview
+npm run kb:segments                                # make material plannable
 npm run generate:questions -- --from-kb dsa
-npm run mark:reviewed -- --kb dsa --list      # read every answer key, --reject <id> the wrong ones, then:
+npm run mark:reviewed -- --kb dsa --list           # review answer keys
 npm run mark:reviewed -- --kb dsa --approve
-npm run eval:kb
+npm run eval:kb                                    # measure tutor quality
 ```
-Note: `npm run seed:reset` truncates `subjects`, which cascades to the knowledge base — re-run ingestion afterwards.
+</details>
 
-Optional content pipeline (needs `GEMINI_API_KEY` in `backend/.env`, offline only — never called at runtime):
-```bash
-npm run generate:questions          # or -- <subject-id> to scope one subject
-npx tsx backend/src/scripts/mark-reviewed.ts dsa   # only after a human reads the answer keys
-npm run embed:resources
-npm run check:links
-```
+<details>
+<summary><b>Authentication, CORS and rate limits</b></summary>
 
-## Authentication, CORS and rate limits
+- `POST /api/auth/register` and `/api/auth/login` return a signed 7-day token (`Authorization: Bearer <token>`; the live stream uses `?token=`).
+- Set `AUTH_REQUIRED=true` and a 32+ character `AUTH_SECRET` to enforce per-student access. It is off by default for the local demo.
+- Allowed origins come from `CORS_ORIGINS`; unset allows only localhost.
+- Rate limits apply per student (or IP): sign-in 10/min, tutor 20/min, agent 30/min, all configurable.
+</details>
 
-- `POST /api/auth/register`, `POST /api/auth/login` (email + password, 8+ characters, scrypt-hashed) return a signed 7-day token; send it as `Authorization: Bearer <token>`. The SSE stream takes `?token=` because `EventSource` cannot set headers. `GET /api/auth/me` returns the signed-in student.
-- With `AUTH_REQUIRED=true`, every `/api/students/:id/...` route, activity, assessment, goal and plan-version route checks that the token's student owns the resource (403 otherwise), `GET /students` returns only the caller, and `/agent/tick` sweeps only the caller. The server refuses to start without a usable `AUTH_SECRET`.
-- Give the seeded demo student a login with `npm run set-password --workspace=backend -- demo@bloom.local <password>`.
-- The frontend shows a sign-in screen when the API answers 401.
-- CORS: browsers may call the API from `CORS_ORIGINS` (comma-separated); unset allows only `localhost` / `127.0.0.1`.
-- Rate limits (per student, else per IP; in-memory, per process): sign-in 10/min, tutor and `/kb/chunks` `RATE_LIMIT_TUTOR_PER_MIN` (default 20), `/agent/run` and `/agent/tick` `RATE_LIMIT_AGENT_PER_MIN` (default 30). `RATE_LIMIT_DISABLED=true` turns them off (the tests do).
+---
 
-## Known limitations
+## 🔍 Honest scope
 
-- The knowledge base has no course material until you ingest some (`kb-manifest.json` ships empty). The DSA subtopic tree is arrays / linked lists / stacks & queues / trees / graphs / DP — it has no hash-table or trie subtopics, so pick demo material that maps onto linked lists, stacks and queues, or trees.
-- With `LLM_ENABLED=false` (the repo default in `backend/.env`) the tutor returns extractive answers only; set it to `true` to see paraphrased, validated answers.
-- The plan validator's C7 rule drops LEARN/PRACTICE activities that have no scheduled FINAL_TEST, and C5 rejects a plan in which a prerequisite is not yet mastered; both are v3 behaviour. A demo student needs diagnostic beliefs (the onboarding diagnostic) for plans, and therefore for `CONFUSION_SIGNAL` patches, to commit cleanly.
-- Only DSA's question bank has been human-reviewed; CN/RDBMS/OOP are LLM-generated and flagged `reviewed: false` deliberately (see PRD §1's "never fake correctness").
-- The Phase 9 evaluation harness (`backend/src/eval/`) is now wired to `npm run eval -- [--per-profile 2] [--days 21] [--subject dsa] [--seed 42]`, which writes `eval-results.json` for `GET /api/eval/latest`. In a first trial the simulated goals came back `infeasible` (the agent negotiated instead of planning) even over 60 days, so no assessments were recorded; the cause is not yet diagnosed, so there is no published eval report. `/api/eval/latest` still returns a clean 404 until a real one exists.
-- The `SELECT ... LIMIT 1` audit is done: every `limit(1)` in `backend/src` is scoped by student or goal, and the one unscoped lookup (a test fixture, `ensureGoal`) is fixed. `npm run eval` creates synthetic students (`eval-…@bloom.sim`) in the same `students` table and does not delete them; remove them with `delete from students where email like 'eval-%@bloom.sim'`.
-- Auth is **off by default** so the local demo and the test suite work unchanged. Set `AUTH_REQUIRED=true` and `AUTH_SECRET` (32+ random characters) to enforce it; see "Authentication" below. While it is off, any client that knows a student id can read and change that student's data.
+We'd rather tell you what's real than oversell it.
 
-## Tech stack
+| ✅ Real | 🧪 Simulated / limited |
+|---|---|
+| Video, slides and textbook indexed together with exact locations | Ingestion is a command-line step, not an upload screen |
+| Vision model reads slides, including diagram-only ones | Video is indexed by transcript; frames aren't analysed |
+| Every shown answer passes the citation check | The check proves a source exists and was quoted, not that the paraphrase is perfectly faithful |
+| DSA questions generated from material and human-reviewed | Other subjects' question banks are AI-generated and flagged unreviewed |
+| Mastery model, planner, validator and failure handling | Passage of time (the demo uses a simulated clock) |
 
-Express + TypeScript + Drizzle ORM + Postgres/pgvector on the backend; React + Vite + Tailwind on the frontend; Zod for validation end to end; Vitest for tests (320+ passing).
+One course slice (DSA) is fully ingested for the demo; other subjects show a clear "no material yet" state.
+
+**Built during the hackathon:** the knowledge base and ingesters, vision step for slides, cited tutor and citation validator, grounded question generation, confusion detection, and the Library / Tutor / Source Viewer screens.
+**Built before:** the study-plan agent, mastery model, planner, validator and resilience layer.
+
+---
+
+## 👥 Team
+
+<!-- Add names / roles / links here -->
