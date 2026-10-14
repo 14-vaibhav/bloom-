@@ -13,6 +13,7 @@ import { subscribeAgentEvents } from "../lib/eventBus.js";
 import { asyncRoute, badRequest, ok, parseBody, parseQuery } from "../lib/http.js";
 import { getToolHealth } from "../tools/breaker.js";
 import type { ToolBucket } from "../tools/errors.js";
+import { assertOwns, authRequired } from "../lib/auth.js";
 
 export const agentRouter = Router();
 
@@ -23,20 +24,25 @@ const HEARTBEAT_MS = Number(process.env.SSE_HEARTBEAT_MS ?? 15_000);
 
 agentRouter.post("/agent/run", asyncRoute(async (req, res) => {
   const body = parseBody(z.object({ student_id: z.string().uuid() }), req.body);
+  assertOwns(req, body.student_id);
   const result = await tick(body.student_id);
   ok(res, result);
 }));
 
-agentRouter.post("/agent/tick", asyncRoute(async (_req, res) => {
+agentRouter.post("/agent/tick", asyncRoute(async (req, res) => {
   // Evaluates every active student in one sweep — the same code path the
   // 30-second scheduler in agent/scheduler.ts calls.
-  const active = await db.selectDistinct({ id: students.id }).from(students);
+  const everyone = await db.selectDistinct({ id: students.id }).from(students);
+  // With auth enforced a caller can only sweep their own student, never everyone's.
+  const active = authRequired() ? everyone.filter((s) => s.id === req.auth?.studentId) : everyone;
   const results = await Promise.all(active.map(async (s) => ({ student_id: s.id, ...(await tick(s.id)) })));
   ok(res, { ran: results.length, results });
 }));
 
 agentRouter.get("/agent/runs", asyncRoute(async (req, res) => {
-  const query = parseQuery(z.object({ student_id: z.string().uuid().optional() }), req.query);
+  const parsed = parseQuery(z.object({ student_id: z.string().uuid().optional() }), req.query);
+  const query = { student_id: authRequired() ? req.auth?.studentId ?? parsed.student_id : parsed.student_id };
+  if (query.student_id) assertOwns(req, query.student_id);
   const rows = query.student_id
     ? await db.select().from(agentRuns).where(eq(agentRuns.studentId, query.student_id)).orderBy(desc(agentRuns.startedAt)).limit(100)
     : await db.select().from(agentRuns).orderBy(desc(agentRuns.startedAt)).limit(100);

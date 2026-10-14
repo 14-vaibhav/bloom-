@@ -14,6 +14,7 @@ import {
 } from "../db/schema.js";
 import { buildDefaultBlueprint } from "../agent/assemble.js";
 import { asyncRoute, badRequest, notFound, ok, parseBody } from "../lib/http.js";
+import { assertOwns } from "../lib/auth.js";
 
 export const catalogRouter = Router();
 
@@ -91,6 +92,7 @@ const createGoalSchema = z.object({
 
 catalogRouter.post("/goals", asyncRoute(async (req, res) => {
   const body = parseBody(createGoalSchema, req.body);
+  assertOwns(req, body.student_id);
   const [subject] = await db.select().from(subjects).where(eq(subjects.id, body.subject_id));
   if (!subject) throw notFound(`Subject ${body.subject_id} not found`);
 
@@ -126,6 +128,7 @@ catalogRouter.post("/goals/:id/blueprint", asyncRoute(async (req, res) => {
   const body = parseBody(blueprintSchema, req.body);
   const [goal] = await db.select().from(learningGoals).where(eq(learningGoals.id, req.params.id));
   if (!goal) throw notFound(`Goal ${req.params.id} not found`);
+  assertOwns(req, goal.studentId);
 
   const dropped = body.dropped;
   const mustHave = new Set(goal.mustHaveSubtopics);
@@ -151,6 +154,7 @@ catalogRouter.post("/goals/:id/blueprint", asyncRoute(async (req, res) => {
 catalogRouter.get("/goals/:id/diagnostic", asyncRoute(async (req, res) => {
   const [goal] = await db.select().from(learningGoals).where(eq(learningGoals.id, req.params.id));
   if (!goal) throw notFound(`Goal ${req.params.id} not found`);
+  assertOwns(req, goal.studentId);
   const subtopicIds = Object.keys(goal.blueprint as Record<string, number>);
 
   // A diagnostic that already exists for this goal is returned as-is — creating a second

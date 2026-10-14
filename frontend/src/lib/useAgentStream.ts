@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import type { AgentEvent } from "./types";
+import { getToken } from "./session";
 
 /**
  * Live SSE feed for one student's agent_events (bloom-phase8-brief §A3/§A5
@@ -17,7 +18,8 @@ export function useAgentStream(studentId: string | null) {
     if (!studentId) return;
     setEvents([]);
     seenIds.current = new Set();
-    const source = new EventSource(`/api/students/${studentId}/stream`);
+    const token = getToken(); // EventSource cannot set headers, so the token travels in the query string
+    const source = new EventSource(`/api/students/${studentId}/stream${token ? `?token=${encodeURIComponent(token)}` : ""}`);
     source.onopen = () => setConnected(true);
     source.onerror = () => setConnected(false);
     source.addEventListener("agent_event", (e) => {

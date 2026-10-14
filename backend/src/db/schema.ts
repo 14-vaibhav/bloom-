@@ -96,6 +96,7 @@ export const students = pgTable("students", {
   id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
   name: text("name").notNull(),
   email: text("email").notNull().unique(),
+  passwordHash: text("password_hash"), // scrypt "salt:hash" (lib/auth.ts); null = account cannot log in
   simNow: timestamp("sim_now", { withTimezone: true }).notNull(), // the simulated clock
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });

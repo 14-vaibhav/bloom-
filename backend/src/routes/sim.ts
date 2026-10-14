@@ -22,11 +22,13 @@ import { seedStudent } from "../db/seed/student.js";
 import { tick } from "../agent/orchestrator.js";
 import { asyncRoute, badRequest, notFound, ok, parseBody } from "../lib/http.js";
 import type { ToolBucket } from "../tools/errors.js";
+import { assertOwns } from "../lib/auth.js";
 
 export const simRouter = Router();
 
 simRouter.post("/sim/advance", asyncRoute(async (req, res) => {
   const body = parseBody(z.object({ student_id: z.string().uuid(), hours: z.number().positive() }), req.body);
+  assertOwns(req, body.student_id);
   ok(res, await advanceSimClock(body.student_id, body.hours));
 }));
 
@@ -70,6 +72,7 @@ simRouter.post("/sim/restore-tool", asyncRoute(async (req, res) => {
  */
 simRouter.post("/sim/scenario/:name", asyncRoute(async (req, res) => {
   const body = parseBody(z.object({ student_id: z.string().uuid() }), req.body);
+  assertOwns(req, body.student_id);
   const name = req.params.name.toLowerCase();
   const studentId = body.student_id;
 
@@ -128,6 +131,7 @@ simRouter.post("/sim/reset", asyncRoute(async (req, res) => {
     ? await db.select().from(students).where(eq(students.id, body.student_id))
     : await db.select().from(students).where(eq(students.email, "demo@bloom.local"));
   if (!student) throw notFound("Demo student not found — run `npm run seed` first.");
+  assertOwns(req, student.id);
 
   for (const table of STUDENT_SCOPED_TABLES) {
     await db.delete(table).where(eq((table as typeof learningActivities).studentId, student.id));

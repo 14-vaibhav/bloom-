@@ -19,6 +19,7 @@ import { getWeaknessScore } from "../core/weakness.js";
 import { getStudentPerformance, getSubtopicPerformance } from "../tools/performance.js";
 import { getRevisionPool } from "../tools/qbank.js";
 import { asyncRoute, notFound, ok, parseQuery } from "../lib/http.js";
+import { authRequired } from "../lib/auth.js";
 
 export const studentsRouter = Router();
 
@@ -37,9 +38,10 @@ async function loadActiveGoal(studentId: string) {
 // Not in the original route list — the frontend has no auth and no other way to
 // discover which student id to bootstrap onboarding with, short of hardcoding a
 // UUID. Single-tenant by design (one seeded demo student per deployment).
-studentsRouter.get("/students", asyncRoute(async (_req, res) => {
+studentsRouter.get("/students", asyncRoute(async (req, res) => {
   const rows = await db.select({ id: students.id, name: students.name, email: students.email }).from(students);
-  ok(res, rows);
+  // With auth enforced a caller sees only themselves — never the roster.
+  ok(res, authRequired() ? rows.filter((r) => r.id === req.auth?.studentId) : rows);
 }));
 
 studentsRouter.get("/students/:id/state", asyncRoute(async (req, res) => {

@@ -82,24 +82,29 @@ function kindFilter(kinds?: SourceKindName[]) {
   return kinds && kinds.length ? sql` and s.kind = any(${sql.raw(`ARRAY[${kinds.map((k) => `'${k}'`).join(",")}]::text[]`)})` : sql``;
 }
 
-async function vectorTop(qvec: number[], kinds: SourceKindName[] | undefined, limit: number): Promise<Row[]> {
+/** Restricts a search to specific sources. Ids are bound as parameters, never interpolated. */
+function sourceFilter(sourceIds?: string[]) {
+  return sourceIds && sourceIds.length ? sql` and c.source_id in (${sql.join(sourceIds.map((id) => sql`${id}`), sql`, `)})` : sql``;
+}
+
+async function vectorTop(qvec: number[], kinds: SourceKindName[] | undefined, sourceIds: string[] | undefined, limit: number): Promise<Row[]> {
   const res = await db.execute<Row>(sql`
     select ${SELECT}, 1 - (c.embedding <=> ${vectorLiteral(qvec)}::vector) as sim
     from source_chunks c join sources s on s.id = c.source_id
-    where not c.low_information and c.embedding is not null ${kindFilter(kinds)}
-    order by c.embedding <=> ${vectorLiteral(qvec)}::vector limit ${limit}`);
+    where not c.low_information and c.embedding is not null ${kindFilter(kinds)}${sourceFilter(sourceIds)}
+    order by c.embedding <=> ${vectorLiteral(qvec)}::vector, c.id limit ${limit}`);
   return res.rows;
 }
 
-async function lexicalTop(terms: string[], kinds: SourceKindName[] | undefined, limit: number): Promise<Row[]> {
+async function lexicalTop(terms: string[], kinds: SourceKindName[] | undefined, sourceIds: string[] | undefined, limit: number): Promise<Row[]> {
   const safe = terms.map((t) => t.replace(/[^a-z0-9]/g, "")).filter(Boolean);
   if (safe.length === 0) return [];
   const tsq = safe.join(" | ");
   const res = await db.execute<Row>(sql`
     select ${SELECT}
     from source_chunks c join sources s on s.id = c.source_id
-    where not c.low_information and c.tsv @@ to_tsquery('english', ${tsq}) ${kindFilter(kinds)}
-    order by ts_rank_cd(c.tsv, to_tsquery('english', ${tsq})) desc limit ${limit}`);
+    where not c.low_information and c.tsv @@ to_tsquery('english', ${tsq}) ${kindFilter(kinds)}${sourceFilter(sourceIds)}
+    order by ts_rank_cd(c.tsv, to_tsquery('english', ${tsq})) desc, c.id limit ${limit}`);
   return res.rows;
 }
 
@@ -148,6 +153,8 @@ export type SearchOptions = {
   query: string;
   subtopicIds?: string[];
   kinds?: SourceKindName[];
+  /** Search only these sources (e.g. one textbook). Omitted = every source. */
+  sourceIds?: string[];
   k?: number;
   /** Injected in tests; defaults to the Gemini embedding client with a 3s timeout. */
   embedQuery?: (q: string) => Promise<number[]>;
@@ -172,7 +179,7 @@ export async function searchCourseContent(opts: SearchOptions): Promise<SearchRe
     notices.push("Embedding unavailable — lexical retrieval used.");
   }
 
-  const [vec, lex] = await Promise.all([qvec ? vectorTop(qvec, opts.kinds, 20) : Promise.resolve([]), lexicalTop(terms, opts.kinds, 20)]);
+  const [vec, lex] = await Promise.all([qvec ? vectorTop(qvec, opts.kinds, opts.sourceIds, 20) : Promise.resolve([]), lexicalTop(terms, opts.kinds, opts.sourceIds, 20)]);
   const mode = qvec ? "hybrid" : "lexical";
   const fused = rrf(qvec ? [vec, lex] : [lex], opts.subtopicIds ?? []);
   const picked = diversify(fused, k);

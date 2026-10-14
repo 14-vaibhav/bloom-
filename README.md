@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Bloom — Multimodal Study Companion
 
 An AI study companion that has read your course. It unifies lecture videos, slides and a textbook into one source-cited knowledge base, then uses it to tutor and to run adaptive assessments. **Every tutor answer and every question points at an exact lecture timestamp, slide or textbook page — and a validator rejects any answer whose citations do not check out.** Underneath is the v3 learning autopilot, which is the personalisation engine: it predicts how a study session will go, tests whether it was right, and rewrites the plan the moment reality disagrees. Not "goal in → LLM → timetable → done" — a closed loop that observes, updates beliefs, evaluates triggers, decides scope, plans, validates, repairs, and acts, on its own clock.
@@ -108,19 +107,25 @@ npm run embed:resources
 npm run check:links
 ```
 
+## Authentication, CORS and rate limits
+
+- `POST /api/auth/register`, `POST /api/auth/login` (email + password, 8+ characters, scrypt-hashed) return a signed 7-day token; send it as `Authorization: Bearer <token>`. The SSE stream takes `?token=` because `EventSource` cannot set headers. `GET /api/auth/me` returns the signed-in student.
+- With `AUTH_REQUIRED=true`, every `/api/students/:id/...` route, activity, assessment, goal and plan-version route checks that the token's student owns the resource (403 otherwise), `GET /students` returns only the caller, and `/agent/tick` sweeps only the caller. The server refuses to start without a usable `AUTH_SECRET`.
+- Give the seeded demo student a login with `npm run set-password --workspace=backend -- demo@bloom.local <password>`.
+- The frontend shows a sign-in screen when the API answers 401.
+- CORS: browsers may call the API from `CORS_ORIGINS` (comma-separated); unset allows only `localhost` / `127.0.0.1`.
+- Rate limits (per student, else per IP; in-memory, per process): sign-in 10/min, tutor and `/kb/chunks` `RATE_LIMIT_TUTOR_PER_MIN` (default 20), `/agent/run` and `/agent/tick` `RATE_LIMIT_AGENT_PER_MIN` (default 30). `RATE_LIMIT_DISABLED=true` turns them off (the tests do).
+
 ## Known limitations
 
 - The knowledge base has no course material until you ingest some (`kb-manifest.json` ships empty). The DSA subtopic tree is arrays / linked lists / stacks & queues / trees / graphs / DP — it has no hash-table or trie subtopics, so pick demo material that maps onto linked lists, stacks and queues, or trees.
 - With `LLM_ENABLED=false` (the repo default in `backend/.env`) the tutor returns extractive answers only; set it to `true` to see paraphrased, validated answers.
 - The plan validator's C7 rule drops LEARN/PRACTICE activities that have no scheduled FINAL_TEST, and C5 rejects a plan in which a prerequisite is not yet mastered; both are v3 behaviour. A demo student needs diagnostic beliefs (the onboarding diagnostic) for plans, and therefore for `CONFUSION_SIGNAL` patches, to commit cleanly.
 - Only DSA's question bank has been human-reviewed; CN/RDBMS/OOP are LLM-generated and flagged `reviewed: false` deliberately (see PRD §1's "never fake correctness").
-- The Phase 9 evaluation harness (`backend/src/eval/`) — synthetic students, calibration curve, chaos testing — is implemented but not yet wired to a `npm run eval` CLI entry point; `GET /api/eval/latest` returns a clean 404 until that report exists rather than fabricating one, and the frontend `/eval` screen reflects that honestly.
-- A handful of routes/scripts that pick "the" demo student did so with an unfiltered `SELECT ... LIMIT 1`, which broke once the eval harness (run manually during development) persisted synthetic students into the same `students` table. Fixed at the query level in the test helpers and seed script; worth auditing further before running the eval harness against a shared database again.
-- No auth — the frontend remembers a student id in `localStorage` as a per-viewer convenience only.
+- The Phase 9 evaluation harness (`backend/src/eval/`) is now wired to `npm run eval -- [--per-profile 2] [--days 21] [--subject dsa] [--seed 42]`, which writes `eval-results.json` for `GET /api/eval/latest`. In a first trial the simulated goals came back `infeasible` (the agent negotiated instead of planning) even over 60 days, so no assessments were recorded; the cause is not yet diagnosed, so there is no published eval report. `/api/eval/latest` still returns a clean 404 until a real one exists.
+- The `SELECT ... LIMIT 1` audit is done: every `limit(1)` in `backend/src` is scoped by student or goal, and the one unscoped lookup (a test fixture, `ensureGoal`) is fixed. `npm run eval` creates synthetic students (`eval-…@bloom.sim`) in the same `students` table and does not delete them; remove them with `delete from students where email like 'eval-%@bloom.sim'`.
+- Auth is **off by default** so the local demo and the test suite work unchanged. Set `AUTH_REQUIRED=true` and `AUTH_SECRET` (32+ random characters) to enforce it; see "Authentication" below. While it is off, any client that knows a student id can read and change that student's data.
 
 ## Tech stack
 
 Express + TypeScript + Drizzle ORM + Postgres/pgvector on the backend; React + Vite + Tailwind on the frontend; Zod for validation end to end; Vitest for tests (320+ passing).
-=======
-# bloom-
->>>>>>> 088232e66ca3a46aa4731abe8abbd96cda837d69

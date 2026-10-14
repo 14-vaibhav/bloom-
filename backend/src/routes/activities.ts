@@ -12,6 +12,7 @@ import { db } from "../db/client.js";
 import { learningActivities, resourceFeedback } from "../db/schema.js";
 import { getSimNow } from "../agent/simClock.js";
 import { asyncRoute, notFound, ok, parseBody, withIdempotency } from "../lib/http.js";
+import { assertOwns } from "../lib/auth.js";
 
 export const activitiesRouter = Router();
 
@@ -31,6 +32,7 @@ const completeSchema = z.object({
 activitiesRouter.post("/activities/:id/complete", asyncRoute(async (req, res) => {
   const body = parseBody(completeSchema, req.body);
   const activity = await loadActivity(req.params.id);
+  assertOwns(req, activity.studentId);
   const result = await withIdempotency({
     endpoint: "activities.complete", key: body.idempotency_key,
     run: async () => {
@@ -52,6 +54,7 @@ const missedSchema = z.object({ idempotency_key: z.string().optional() });
 activitiesRouter.post("/activities/:id/missed", asyncRoute(async (req, res) => {
   const body = parseBody(missedSchema, req.body);
   const activity = await loadActivity(req.params.id);
+  assertOwns(req, activity.studentId);
   const result = await withIdempotency({
     endpoint: "activities.missed", key: body.idempotency_key,
     run: async () => {
@@ -65,6 +68,7 @@ activitiesRouter.post("/activities/:id/missed", asyncRoute(async (req, res) => {
 
 activitiesRouter.post("/activities/:id/start", asyncRoute(async (req, res) => {
   const activity = await loadActivity(req.params.id);
+  assertOwns(req, activity.studentId);
   const [updated] = await db.update(learningActivities).set({ status: "in_progress" }).where(eq(learningActivities.id, activity.id)).returning();
   ok(res, { activity_id: updated.id, status: updated.status });
 }));

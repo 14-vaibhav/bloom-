@@ -12,12 +12,15 @@ import { getDemoStudentId, resetToolHealth } from "../tools/helpers.js";
 import { BOOK, cleanFakeKb, fakeEmbedQuery, seedFakeKb, SLIDES, VIDEO } from "./helpers.js";
 import { toolHealth } from "../../src/db/schema.js";
 
+// The development database may hold real ingested material; searching only the fixtures keeps these tests independent of it.
+const FIXTURES = [VIDEO, SLIDES, BOOK];
+
 beforeAll(async () => { await seedFakeKb(); await resetToolHealth("kb"); });
 afterAll(async () => { await cleanFakeKb(); await resetToolHealth("kb"); });
 
 describe("search_course_content", () => {
   it("returns chunks from all three kinds with exact labels and deep links", async () => {
-    const r = await searchCourseContent({ query: "how does a singly linked list store the next pointer in each node", embedQuery: fakeEmbedQuery, evidenceSim: 0.2 });
+    const r = await searchCourseContent({ query: "how does a singly linked list store the next pointer in each node", sourceIds: FIXTURES, embedQuery: fakeEmbedQuery, evidenceSim: 0.2 });
     expect(r.retrieval_mode).toBe("hybrid");
     const kinds = new Set(r.chunks.map((c) => c.kind));
     expect(kinds).toEqual(new Set(["video", "slides", "textbook"]));
@@ -33,33 +36,34 @@ describe("search_course_content", () => {
   });
 
   it("retrieves a diagram-only slide through its vision description", async () => {
-    const r = await searchCourseContent({ query: "vertical pile of plates where push adds on top", embedQuery: fakeEmbedQuery, evidenceSim: 0.2 });
+    const r = await searchCourseContent({ query: "vertical pile of plates where push adds on top", sourceIds: FIXTURES, embedQuery: fakeEmbedQuery, evidenceSim: 0.2 });
     expect(r.chunks[0].chunk_id).toBe(`${SLIDES}:1`);
     expect(r.chunks[0].text).toBe("");
   });
 
   it("never returns low-information slides", async () => {
-    const r = await searchCourseContent({ query: "week 5 data structures", embedQuery: fakeEmbedQuery, evidenceSim: 0 });
+    const r = await searchCourseContent({ query: "week 5 data structures", sourceIds: FIXTURES, embedQuery: fakeEmbedQuery, evidenceSim: 0 });
     expect([...r.chunks, ...r.nearest].some((c) => c.chunk_id === `${SLIDES}:2`)).toBe(false);
   });
 
   it("falls back to lexical retrieval when the embedding call fails", async () => {
-    const r = await searchCourseContent({ query: "reverse a linked list by flipping next pointers", embedQuery: async () => { throw new Error("boom"); } });
+    const r = await searchCourseContent({ query: "reverse a linked list by flipping next pointers", sourceIds: FIXTURES, embedQuery: async () => { throw new Error("boom"); } });
     expect(r.retrieval_mode).toBe("lexical");
     expect(r.notices).toContain("Embedding unavailable — lexical retrieval used.");
     expect(r.chunks.length).toBeGreaterThan(0);
-    expect(r.chunks[0].chunk_id).toBe(`${VIDEO}:1`);
+    // The lecture chunk and a slide tie on lexical rank, so assert it is retrieved, not that it sorts first.
+    expect(r.chunks.map((c) => c.chunk_id)).toContain(`${VIDEO}:1`);
   });
 
   it("returns no chunks but fills nearest when there is no evidence", async () => {
-    const r = await searchCourseContent({ query: "quantum chromodynamics gluon confinement", embedQuery: fakeEmbedQuery, evidenceSim: 0.5 });
+    const r = await searchCourseContent({ query: "quantum chromodynamics gluon confinement", sourceIds: FIXTURES, embedQuery: fakeEmbedQuery, evidenceSim: 0.5 });
     expect(r.chunks).toEqual([]);
-    const lexical = await searchCourseContent({ query: "quantum chromodynamics gluon confinement", embedQuery: async () => { throw new Error("x"); } });
+    const lexical = await searchCourseContent({ query: "quantum chromodynamics gluon confinement", sourceIds: FIXTURES, embedQuery: async () => { throw new Error("x"); } });
     expect(lexical.chunks).toEqual([]);
   });
 
   it("filters by kind", async () => {
-    const r = await searchCourseContent({ query: "linked list node pointer", kinds: ["textbook"], embedQuery: fakeEmbedQuery, evidenceSim: 0.1 });
+    const r = await searchCourseContent({ query: "linked list node pointer", kinds: ["textbook"], sourceIds: FIXTURES, embedQuery: fakeEmbedQuery, evidenceSim: 0.1 });
     expect(r.chunks.every((c) => c.kind === "textbook")).toBe(true);
     expect(r.chunks[0].chunk_id).toBe(`${BOOK}:0`);
   });

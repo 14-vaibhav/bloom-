@@ -17,6 +17,7 @@
     "ingest:textbook": "npm run ingest:textbook --workspace=backend --",
     "kb:segments": "npm run kb:segments --workspace=backend --",
     "kb:report": "npm run kb:report --workspace=backend --",
+    "eval": "npm run eval --workspace=backend --",
     "eval:kb": "npm run eval:kb --workspace=backend --"
   },
   "workspaces": [

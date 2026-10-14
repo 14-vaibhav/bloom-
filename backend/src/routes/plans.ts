@@ -14,6 +14,7 @@ import { inArray } from "drizzle-orm";
 import { computePlanDiff, type DiffAfterActivity, type DiffBeforeActivity } from "../agent/diff.js";
 import { getPlan } from "../tools/state.js";
 import { asyncRoute, notFound, ok, parseQuery } from "../lib/http.js";
+import { assertOwns } from "../lib/auth.js";
 
 export const plansRouter = Router();
 
@@ -80,5 +81,7 @@ plansRouter.get("/students/:id/plan/diff", asyncRoute(async (req, res) => {
 plansRouter.get("/plan-versions/:id/validation", asyncRoute(async (req, res) => {
   const [row] = await db.select().from(planVersions).where(eq(planVersions.id, req.params.id));
   if (!row) throw notFound(`Plan version ${req.params.id} not found`);
+  const [owner] = await db.select({ studentId: studyPlans.studentId }).from(studyPlans).where(eq(studyPlans.id, row.planId));
+  if (owner) assertOwns(req, owner.studentId);
   ok(res, { version: row.version, scope: row.scope, repair_rounds: row.repairRounds, report: row.validationReport });
 }));

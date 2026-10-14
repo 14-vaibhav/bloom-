@@ -276,7 +276,8 @@ describe("state tool", () => {
 
 async function ensureGoal(studentId: string): Promise<string> {
   const { learningGoals } = await import("../../src/db/schema.js");
-  const [existing] = await db.select().from(learningGoals).limit(1);
+  // Scope to this student: an unfiltered limit(1) returns whichever student's goal sorts first.
+  const [existing] = await db.select().from(learningGoals).where(eq(learningGoals.studentId, studentId)).limit(1);
   if (existing) return existing.id;
   const [row] = await db
     .insert(learningGoals)

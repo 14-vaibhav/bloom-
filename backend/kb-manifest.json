@@ -1,4 +1,67 @@
 {
   "_comment": "One entry per source. `file` is relative to backend/kb-data/ (git-ignored; do not commit raw videos or PDFs). Check each licence on the source's own page and record it in `license`. Example entry: { \"id\": \"vid_cs50_w5\", \"subject_id\": \"dsa\", \"kind\": \"video\", \"title\": \"...\", \"provider\": \"...\", \"url\": \"https://www.youtube.com/watch?v=<id>\", \"license\": \"...\", \"file\": \"cs50_w5.vtt\" }",
-  "sources": []
+  "sources": [
+    {
+      "id": "vid_mit6006_l2",
+      "subject_id": "dsa",
+      "kind": "video",
+      "title": "MIT 6.006 Lecture 2: Data Structures and Dynamic Arrays",
+      "provider": "MIT OpenCourseWare",
+      "url": "https://www.youtube.com/watch?v=CHhwJjR0mZA",
+      "license": "CC BY-NC-SA 4.0 (MIT OpenCourseWare)",
+      "file": "cap_lec2.vtt"
+    },
+    {
+      "id": "vid_mit6006_l6",
+      "subject_id": "dsa",
+      "kind": "video",
+      "title": "MIT 6.006 Lecture 6: Binary Trees, Part 1",
+      "provider": "MIT OpenCourseWare",
+      "url": "https://www.youtube.com/watch?v=76dhtgZt38A",
+      "license": "CC BY-NC-SA 4.0 (MIT OpenCourseWare)",
+      "file": "cap_lec6.vtt"
+    },
+    {
+      "id": "sl_mit6006_l2",
+      "subject_id": "dsa",
+      "kind": "slides",
+      "title": "MIT 6.006 Lecture 2 slides",
+      "provider": "MIT OpenCourseWare",
+      "url": "https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-spring-2020/resources/mit6_006s20_lec2/",
+      "license": "CC BY-NC-SA 4.0 (MIT OpenCourseWare)",
+      "file": "slides_lec2.pdf"
+    },
+    {
+      "id": "sl_mit6006_l6",
+      "subject_id": "dsa",
+      "kind": "slides",
+      "title": "MIT 6.006 Lecture 6 slides",
+      "provider": "MIT OpenCourseWare",
+      "url": "https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-spring-2020/resources/mit6_006s20_lec6/",
+      "license": "CC BY-NC-SA 4.0 (MIT OpenCourseWare)",
+      "file": "slides_lec6.pdf"
+    },
+    {
+      "id": "tb_ods",
+      "subject_id": "dsa",
+      "kind": "textbook",
+      "title": "Open Data Structures (Java) \u2014 complete book",
+      "provider": "Pat Morin",
+      "url": "https://opendatastructures.org/",
+      "license": "CC BY 2.5 CA",
+      "file": "ods.pdf",
+      "first_page": 13,
+      "last_page": 334
+    },
+    {
+      "id": "tb_erickson",
+      "subject_id": "dsa",
+      "kind": "textbook",
+      "title": "Algorithms (Jeff Erickson)",
+      "provider": "Jeff Erickson",
+      "url": "https://jeffe.cs.illinois.edu/teaching/algorithms/",
+      "license": "CC BY 4.0",
+      "file": "erickson.pdf"
+    }
+  ]
 }

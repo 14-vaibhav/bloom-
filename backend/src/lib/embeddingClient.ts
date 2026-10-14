@@ -18,16 +18,28 @@ export async function embedText(text: string, opts: { timeoutMs?: number } = {})
 
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${EMBEDDING_MODEL}:embedContent?key=${apiKey}`;
 
-  const res = await fetch(url, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    ...(opts.timeoutMs ? { signal: AbortSignal.timeout(opts.timeoutMs) } : {}),
-    body: JSON.stringify({
-      model: `models/${EMBEDDING_MODEL}`,
-      content: { parts: [{ text }] },
-      outputDimensionality: EMBEDDING_DIM,
-    }),
-  });
+  // Offline callers (no timeout) wait out free-tier 429s; the runtime query embedding (timeout set) fails fast.
+  const maxRetries = opts.timeoutMs ? 0 : 8;
+  let res: Response;
+  for (let attempt = 0; ; attempt++) {
+    res = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      ...(opts.timeoutMs ? { signal: AbortSignal.timeout(opts.timeoutMs) } : {}),
+      body: JSON.stringify({
+        model: `models/${EMBEDDING_MODEL}`,
+        content: { parts: [{ text }] },
+        outputDimensionality: EMBEDDING_DIM,
+      }),
+    });
+    if (!(res.status === 429 || res.status >= 500) || attempt >= maxRetries) break;
+    const body = await res.text().catch(() => "");
+    const hinted = /retry in ([\d.]+)s/i.exec(body);
+    const waitMs = Math.ceil((hinted ? Number(hinted[1]) : 30) * 1000) + 1000;
+    if (waitMs > 5 * 60_000) break; // daily quota, not a per-minute throttle: fail now instead of sleeping for hours
+    console.warn(`  embed throttled/unavailable (${res.status}); waiting ${Math.round(waitMs / 1000)}s (retry ${attempt + 1}/${maxRetries})`);
+    await new Promise((r) => setTimeout(r, waitMs));
+  }
 
   if (!res.ok) {
     const errText = await res.text().catch(() => "");

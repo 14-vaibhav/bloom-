@@ -1,11 +1,202 @@
 {
-  "_comment": "Hand-written gold set for eval:kb (v4 §N7.2): 20 questions — 12 answerable from text, 5 answerable ONLY from a diagram slide (kind: diagram), 3 unanswerable from the material (kind: unanswerable). `expected` points at the source and the range where the answer lives; write it from the course material, not from retrieval output. Ranges: video {t_start,t_end} seconds · slides {slide_start,slide_end} · textbook {page_start,page_end}. `acceptable` may list further {source_id, range} that also answer it. Example entry below is a template, not a real gold item — delete it.",
-  "template": {
-    "id": "q01",
-    "kind": "answerable",
-    "question": "Why does inserting at the head of a singly linked list take constant time?",
-    "expected": { "source_id": "vid_...", "range": { "t_start": 860, "t_end": 935 } },
-    "acceptable": []
-  },
-  "questions": []
+  "_comment": "Hand-written gold set for eval:kb (v4 \u00a7N7.2): 20 questions \u2014 12 answerable from text, 5 answerable ONLY from a diagram slide (kind: diagram), 3 unanswerable from the material (kind: unanswerable). `expected` points at the source and the range where the answer lives; write it from the course material, not from retrieval output. Ranges: video {t_start,t_end} seconds \u00b7 slides {slide_start,slide_end} \u00b7 textbook {page_start,page_end}. `acceptable` may list further {source_id, range} that also answer it. Example entry below is a template, not a real gold item \u2014 delete it. STATUS: 12 answerable + 3 unanswerable written (q01-q15) from the ingested lecture transcripts and Open Data Structures pages. The 5 `diagram` questions still need to be added once slide vision ingestion succeeds, because they must point at slide numbers in the ingested decks.",
+  "questions": [
+    {
+      "id": "q01",
+      "kind": "answerable",
+      "question": "Why does reading the i-th element of a linked list take linear time while an array does it in constant time?",
+      "expected": {
+        "source_id": "vid_mit6006_l2",
+        "range": {
+          "t_start": 1873,
+          "t_end": 1936
+        }
+      },
+      "acceptable": []
+    },
+    {
+      "id": "q02",
+      "kind": "answerable",
+      "question": "Why does inserting at the front of a linked list cost constant time but inserting into the middle of an array does not?",
+      "expected": {
+        "source_id": "vid_mit6006_l2",
+        "range": {
+          "t_start": 1062,
+          "t_end": 1124
+        }
+      },
+      "acceptable": [
+        {
+          "source_id": "vid_mit6006_l2",
+          "range": {
+            "t_start": 1332,
+            "t_end": 1398
+          }
+        },
+        {
+          "source_id": "vid_mit6006_l2",
+          "range": {
+            "t_start": 1873,
+            "t_end": 1936
+          }
+        }
+      ]
+    },
+    {
+      "id": "q03",
+      "kind": "answerable",
+      "question": "Why does doubling the size of a dynamic array when it fills give constant amortized cost per append?",
+      "expected": {
+        "source_id": "vid_mit6006_l2",
+        "range": {
+          "t_start": 2395,
+          "t_end": 2720
+        }
+      },
+      "acceptable": []
+    },
+    {
+      "id": "q04",
+      "kind": "answerable",
+      "question": "How is the height of a node in a binary tree defined, and what is the height of a leaf?",
+      "expected": {
+        "source_id": "vid_mit6006_l6",
+        "range": {
+          "t_start": 772,
+          "t_end": 833
+        }
+      },
+      "acceptable": []
+    },
+    {
+      "id": "q05",
+      "kind": "answerable",
+      "question": "How do you find the successor of a node in a binary tree when it has no right child?",
+      "expected": {
+        "source_id": "vid_mit6006_l6",
+        "range": {
+          "t_start": 1575,
+          "t_end": 1700
+        }
+      },
+      "acceptable": []
+    },
+    {
+      "id": "q06",
+      "kind": "answerable",
+      "question": "Is a binary tree's traversal order stored explicitly anywhere, and why not?",
+      "expected": {
+        "source_id": "vid_mit6006_l6",
+        "range": {
+          "t_start": 1837,
+          "t_end": 1897
+        }
+      },
+      "acceptable": []
+    },
+    {
+      "id": "q07",
+      "kind": "answerable",
+      "question": "How does an ArrayDeque use a circular array to add and remove at both ends quickly?",
+      "expected": {
+        "source_id": "tb_ods",
+        "range": {
+          "page_start": 53,
+          "page_end": 56
+        }
+      },
+      "acceptable": [
+        {
+          "source_id": "tb_ods",
+          "range": {
+            "page_start": 50,
+            "page_end": 52
+          }
+        }
+      ]
+    },
+    {
+      "id": "q08",
+      "kind": "answerable",
+      "question": "What is the purpose of the dummy node in a doubly-linked list, and how does it simplify adding and removing?",
+      "expected": {
+        "source_id": "tb_ods",
+        "range": {
+          "page_start": 79,
+          "page_end": 82
+        }
+      },
+      "acceptable": []
+    },
+    {
+      "id": "q09",
+      "kind": "answerable",
+      "question": "How does a skiplist choose the height of a new node, and what does that do to search time?",
+      "expected": {
+        "source_id": "tb_ods",
+        "range": {
+          "page_start": 101,
+          "page_end": 104
+        }
+      },
+      "acceptable": []
+    },
+    {
+      "id": "q10",
+      "kind": "answerable",
+      "question": "In a binary heap stored in an array, where are the children and the parent of the element at index i?",
+      "expected": {
+        "source_id": "tb_ods",
+        "range": {
+          "page_start": 224,
+          "page_end": 227
+        }
+      },
+      "acceptable": []
+    },
+    {
+      "id": "q11",
+      "kind": "answerable",
+      "question": "Why do B-trees suit data stored on disk better than ordinary balanced binary search trees?",
+      "expected": {
+        "source_id": "tb_ods",
+        "range": {
+          "page_start": 298,
+          "page_end": 301
+        }
+      },
+      "acceptable": []
+    },
+    {
+      "id": "q12",
+      "kind": "answerable",
+      "question": "How does hashing with chaining resolve two keys landing in the same slot?",
+      "expected": {
+        "source_id": "tb_ods",
+        "range": {
+          "page_start": 119,
+          "page_end": 121
+        }
+      },
+      "acceptable": []
+    },
+    {
+      "id": "q13",
+      "kind": "unanswerable",
+      "question": "How does Dijkstra's algorithm cope with negative edge weights?",
+      "acceptable": []
+    },
+    {
+      "id": "q14",
+      "kind": "unanswerable",
+      "question": "What is the running time of the Floyd-Warshall all-pairs shortest path algorithm?",
+      "acceptable": []
+    },
+    {
+      "id": "q15",
+      "kind": "unanswerable",
+      "question": "How does TCP congestion control adjust the sending window after packet loss?",
+      "acceptable": []
+    }
+  ]
 }

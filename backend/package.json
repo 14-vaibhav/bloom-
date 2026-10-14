@@ -25,6 +25,7 @@
     "kb:segments": "tsx src/scripts/build-segments.ts",
     "kb:report": "tsx src/scripts/kb-report.ts",
     "kb:tune-tau": "tsx src/scripts/kb-tune-tau.ts",
+    "eval": "tsx src/scripts/run-eval.ts",
     "eval:kb": "tsx src/eval/kb/runner.ts"
   },
   "dependencies": {

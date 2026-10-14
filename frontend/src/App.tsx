@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { NavLink, Route, Routes, useNavigate } from "react-router-dom";
 import { useStudentId } from "./lib/student";
 import { Loading } from "./components/ui";
 import { DemoPanel } from "./components/DemoPanel";
 import { Onboarding } from "./screens/Onboarding";
+import { Login } from "./screens/Login";
+import { UNAUTHENTICATED_EVENT } from "./lib/session";
 import { Dashboard } from "./screens/Dashboard";
 import { StudyPlan } from "./screens/StudyPlan";
 import { TopicProgress } from "./screens/TopicProgress";
@@ -178,7 +180,18 @@ function Shell({ studentId, children }: { studentId: string; children: React.Rea
 }
 
 export default function App() {
-  const { studentId, loading } = useStudentId();
+  const { studentId, setStudentId, loading } = useStudentId();
+  const [needsLogin, setNeedsLogin] = useState(false);
+
+  useEffect(() => {
+    const show = () => setNeedsLogin(true);
+    window.addEventListener(UNAUTHENTICATED_EVENT, show);
+    return () => window.removeEventListener(UNAUTHENTICATED_EVENT, show);
+  }, []);
+
+  if (needsLogin) {
+    return <Login onSignedIn={(id) => { setStudentId(id); setNeedsLogin(false); window.location.assign("/"); }} />;
+  }
 
   if (loading) {
     return (

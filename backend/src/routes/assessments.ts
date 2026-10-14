@@ -11,6 +11,7 @@ import { db } from "../db/client.js";
 import { assessments } from "../db/schema.js";
 import { composeAssessment, submitAnswers } from "../tools/qbank.js";
 import { asyncRoute, badRequest, notFound, ok, parseBody } from "../lib/http.js";
+import { assertOwns } from "../lib/auth.js";
 
 export const assessmentsRouter = Router();
 
@@ -27,6 +28,7 @@ const createSchema = z.object({
 assessmentsRouter.post("/students/:id/assessments", asyncRoute(async (req, res) => {
   const body = parseBody(createSchema, req.body);
   if (body.student_id !== req.params.id) throw badRequest("student_id must match the URL.", "student_id");
+  assertOwns(req, body.student_id);
   const result = await composeAssessment({ student_id: body.student_id, subtopic_id: body.subtopic_id, purpose: body.purpose, count: body.count });
   ok(res, result, 201);
 }));
@@ -34,6 +36,7 @@ assessmentsRouter.post("/students/:id/assessments", asyncRoute(async (req, res) 
 assessmentsRouter.get("/assessments/:id", asyncRoute(async (req, res) => {
   const [assessment] = await db.select().from(assessments).where(eq(assessments.id, req.params.id));
   if (!assessment) throw notFound(`Assessment ${req.params.id} not found`);
+  assertOwns(req, assessment.studentId);
 
   // Preserve question order as composed, not DB return order — fetched by the full id set below.
   const all = assessment.questionIds.length > 0
@@ -65,6 +68,7 @@ assessmentsRouter.post("/assessments/:id/submit", asyncRoute(async (req, res) =>
   const body = parseBody(submitSchema, req.body);
   const [assessment] = await db.select().from(assessments).where(eq(assessments.id, req.params.id));
   if (!assessment) throw notFound(`Assessment ${req.params.id} not found`);
+  assertOwns(req, assessment.studentId);
   const result = await submitAnswers({ assessment_id: req.params.id, answers: body.answers, idempotency_key: body.idempotency_key });
   ok(res, {
     score: result.score, per_topic: result.per_subtopic, per_concept: result.per_concept,
