@@ -15,9 +15,14 @@ Bloom fixes both problems:
 
 <!-- Upload your video to GitHub (drag & drop into this file in the GitHub editor, or into an issue/PR comment) and paste the generated link below, replacing this block. -->
 
+
+
 > **📹 Demo video: coming here**
 >
-> *(Paste the GitHub-hosted video link or drag the file into this spot.)*
+
+https://github.com/user-attachments/assets/4b274e6e-a737-4c66-b389-0aa61a3f1ec5
+
+
 
 <!-- Optional: add screenshots -->
 <!-- ![Dashboard](docs/screenshots/dashboard.png) -->
@@ -220,6 +225,11 @@ One course slice (DSA) is fully ingested for the demo; other subjects show a cle
 
 ---
 
-## 👥 Team
 
-<!-- Add names / roles / links here -->
+
+
+https://github.com/user-attachments/assets/8a0f56e3-71a1-44e8-8e55-76edf4a72fe0
+
+
+
+
