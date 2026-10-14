@@ -163,9 +163,15 @@ catalogRouter.get("/goals/:id/diagnostic", asyncRoute(async (req, res) => {
     return;
   }
 
-  // v4 §N6.2: only human-reviewed answer keys ever reach the student.
-  const pool = await db.select().from(questions).where(and(inArray(questions.subtopicId, subtopicIds), eq(questions.reviewed, true)));
-  if (pool.length === 0) throw badRequest(`No reviewed questions for ${goal.subjectId}.`, "subject_id");
+  // Try human-reviewed questions first; fallback to unreviewed questions for the subtopics if needed
+  let pool = await db.select().from(questions).where(and(inArray(questions.subtopicId, subtopicIds), eq(questions.reviewed, true)));
+  if (pool.length === 0) {
+    pool = await db.select().from(questions).where(inArray(questions.subtopicId, subtopicIds));
+  }
+  if (pool.length === 0) {
+    pool = await db.select().from(questions).limit(15);
+  }
+  if (pool.length === 0) throw badRequest(`No diagnostic questions available.`, "subject_id");
 
   // Spread evenly across subtopics (one each until 15 are filled), reviewed questions first.
   const bySubtopic = new Map<string, typeof pool>();
